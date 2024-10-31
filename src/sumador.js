@@ -1,5 +1,1 @@
-function sumar(a, b) {
-  return a + b;
-}
-
-export default sumar;
+export const sumar = ( a, b ) => { return a + b};
