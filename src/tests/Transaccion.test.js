@@ -13,4 +13,17 @@ describe('Transaccion', () => {
       fecha: '2024-10-31'
     });
   });
+
+  test('debería registrar un ingreso con cantidad, descripción y fecha', () => {
+    const transaccion = Transaccion();
+    transaccion.registrarIngreso(500, 'Mesada', '2024-10-31');
+
+    const historialIngresos = transaccion.obtenerHistorialIngresos();
+    expect(historialIngresos).toHaveLength(1);
+    expect(historialIngresos[0]).toEqual({
+      cantidad: 500,
+      descripcion: 'Mesada',
+      fecha: '2024-10-31'
+    });
+  });
 });
