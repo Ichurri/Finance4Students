@@ -1,4 +1,4 @@
-import { Usuario } from '../clases/Usuari';
+import { Usuario } from '../clases/Usuario';
 
 describe('Usuario', () => {
   test('debería permitir el login con usuario y contraseña correctos', () => {
