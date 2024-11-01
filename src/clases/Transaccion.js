@@ -14,10 +14,17 @@ export const Transaccion = () => {
 
   const obtenerHistorialIngresos = () => historialIngresos;
 
+  const calcularSaldoTotal = () => {
+    const totalIngresos = historialIngresos.reduce((total, ingreso) => total + ingreso.cantidad, 0);
+    const totalGastos = historialGastos.reduce((total, gasto) => total + gasto.cantidad, 0);
+    return totalIngresos - totalGastos;
+  };
+
   return {
     registrarGasto,
     obtenerHistorialGastos,
     registrarIngreso,
-    obtenerHistorialIngresos
+    obtenerHistorialIngresos,
+    calcularSaldoTotal
   };
 };
