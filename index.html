@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Finance4Students</title>
-</head>
-<body>
-  
-</body>
-</html>
+<div id="login-container">
+  <h2>Iniciar Sesión</h2>
+  <form id="login-form">
+    <label for="username">Usuario:</label>
+    <input type="text" id="username" name="username" required autocomplete="username" />
+    
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password" required autocomplete="current-password" />    
+    <br />
+    <button type="submit">Entrar</button>
+    <!-- Aquí aparecerá el mensaje de error -->
+    <p id="login-error" style="color: red; display: none;"></p>
+  </form>
+</div>
