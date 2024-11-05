@@ -1,6 +1,6 @@
-import { Usuario } from './src/clases/Usuario';
-import { Transaccion } from './src/clases/Transaccion';
-import { ObjetivoAhorro } from './src/clases/ObjetivoAhorro';
+import { Usuario } from './src/clases/Usuario.js';
+import { Transaccion } from './src/clases/Transaccion.js';
+import { ObjetivoAhorro } from './src/clases/ObjetivoAhorro.js';
 
 const usuario = Usuario();
 const transaccion = Transaccion();
@@ -30,7 +30,7 @@ const actualizarSaldoTotal = () => {
 
 const mostrarHistorialGastos = () => {
   const cuerpoHistorialGastos = document.getElementById('cuerpo-historial-gastos');
-  cuerpoHistorialGastos.innerHTML = ''; // Limpiar contenido previo
+  cuerpoHistorialGastos.innerHTML = '';
 
   transaccion.obtenerHistorialGastos().forEach(gasto => {
     const fila = document.createElement('tr');
@@ -45,7 +45,7 @@ const mostrarHistorialGastos = () => {
 
 const mostrarHistorialIngresos = () => {
   const cuerpoHistorialIngresos = document.getElementById('cuerpo-historial-ingresos');
-  cuerpoHistorialIngresos.innerHTML = ''; // Limpiar contenido previo
+  cuerpoHistorialIngresos.innerHTML = '';
 
   transaccion.obtenerHistorialIngresos().forEach(ingreso => {
     const fila = document.createElement('tr');
@@ -58,7 +58,33 @@ const mostrarHistorialIngresos = () => {
   });
 };
 
-// Manejar la creación de un nuevo objetivo de ahorro
+// Manejador para registrar un nuevo gasto
+document.getElementById('form-gasto').addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const cantidad = parseFloat(document.getElementById('cantidad-gasto').value);
+  const descripcion = document.getElementById('descripcion-gasto').value;
+  const fecha = new Date().toLocaleDateString();
+
+  transaccion.registrarGasto(cantidad, descripcion, fecha);
+  mostrarHistorialGastos();
+  actualizarSaldoTotal();
+});
+
+// Manejador para registrar un nuevo ingreso
+document.getElementById('form-ingreso').addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const cantidad = parseFloat(document.getElementById('cantidad-ingreso').value);
+  const descripcion = document.getElementById('descripcion-ingreso').value;
+  const fecha = new Date().toLocaleDateString();
+
+  transaccion.registrarIngreso(cantidad, descripcion, fecha);
+  mostrarHistorialIngresos();
+  actualizarSaldoTotal();
+});
+
+// Manejador para crear un nuevo objetivo de ahorro
 document.getElementById('form-objetivo-ahorro').addEventListener('submit', (event) => {
   event.preventDefault();
 

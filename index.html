@@ -28,6 +28,18 @@
       <p id="saldo-total">$0</p>
     </section>
 
+    <!-- Registrar Nuevo Gasto -->
+    <section id="registro-gasto-section">
+      <h2>Registrar Gasto</h2>
+      <form id="form-gasto">
+        <label for="cantidad-gasto">Cantidad:</label>
+        <input type="number" id="cantidad-gasto" name="cantidad-gasto" required />
+        <label for="descripcion-gasto">Descripción:</label>
+        <input type="text" id="descripcion-gasto" name="descripcion-gasto" required />
+        <button type="submit">Agregar Gasto</button>
+      </form>
+    </section>
+
     <!-- Historial de Gastos -->
     <section id="historial-gastos-section">
       <h2>Historial de Gastos</h2>
@@ -43,6 +55,18 @@
           <!-- Los gastos se mostrarán aquí dinámicamente -->
         </tbody>
       </table>
+    </section>
+
+    <!-- Registrar Nuevo Ingreso -->
+    <section id="registro-ingreso-section">
+      <h2>Registrar Ingreso</h2>
+      <form id="form-ingreso">
+        <label for="cantidad-ingreso">Cantidad:</label>
+        <input type="number" id="cantidad-ingreso" name="cantidad-ingreso" required />
+        <label for="descripcion-ingreso">Descripción:</label>
+        <input type="text" id="descripcion-ingreso" name="descripcion-ingreso" required />
+        <button type="submit">Agregar Ingreso</button>
+      </form>
     </section>
 
     <!-- Historial de Ingresos -->
