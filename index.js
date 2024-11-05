@@ -6,6 +6,17 @@ const usuario = Usuario();
 const transaccion = Transaccion();
 const objetivoAhorro = ObjetivoAhorro();
 
+// Funciones auxiliares para `localStorage`
+const guardarEnLocalStorage = (clave, valor) => {
+  localStorage.setItem(clave, JSON.stringify(valor));
+};
+
+const obtenerDeLocalStorage = (clave) => {
+  const datos = localStorage.getItem(clave);
+  return datos ? JSON.parse(datos) : null;
+};
+
+// Manejo de login
 document.getElementById('login-form').addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -15,19 +26,20 @@ document.getElementById('login-form').addEventListener('submit', (event) => {
   if (usuario.login(username, password)) {
     document.getElementById('login-container').style.display = 'none';
     document.getElementById('app-container').style.display = 'block';
-    actualizarSaldoTotal();
-    mostrarHistorialGastos();
-    mostrarHistorialIngresos();
+    cargarDatos(); // Cargar los datos desde localStorage al iniciar sesión
   } else {
     alert('Credenciales incorrectas');
   }
 });
 
+// Actualizar saldo total y guardar en localStorage
 const actualizarSaldoTotal = () => {
   const saldoTotal = transaccion.calcularSaldoTotal();
   document.getElementById('saldo-total').textContent = `$${saldoTotal}`;
+  guardarEnLocalStorage('saldoTotal', saldoTotal);
 };
 
+// Mostrar historial de gastos en la interfaz
 const mostrarHistorialGastos = () => {
   const cuerpoHistorialGastos = document.getElementById('cuerpo-historial-gastos');
   cuerpoHistorialGastos.innerHTML = '';
@@ -43,6 +55,7 @@ const mostrarHistorialGastos = () => {
   });
 };
 
+// Mostrar historial de ingresos en la interfaz
 const mostrarHistorialIngresos = () => {
   const cuerpoHistorialIngresos = document.getElementById('cuerpo-historial-ingresos');
   cuerpoHistorialIngresos.innerHTML = '';
@@ -58,7 +71,7 @@ const mostrarHistorialIngresos = () => {
   });
 };
 
-// Manejador para registrar un nuevo gasto
+// Guardar un gasto en localStorage
 document.getElementById('form-gasto').addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -67,11 +80,12 @@ document.getElementById('form-gasto').addEventListener('submit', (event) => {
   const fecha = new Date().toLocaleDateString();
 
   transaccion.registrarGasto(cantidad, descripcion, fecha);
+  guardarEnLocalStorage('gastos', transaccion.obtenerHistorialGastos());
   mostrarHistorialGastos();
   actualizarSaldoTotal();
 });
 
-// Manejador para registrar un nuevo ingreso
+// Guardar un ingreso en localStorage
 document.getElementById('form-ingreso').addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -80,11 +94,12 @@ document.getElementById('form-ingreso').addEventListener('submit', (event) => {
   const fecha = new Date().toLocaleDateString();
 
   transaccion.registrarIngreso(cantidad, descripcion, fecha);
+  guardarEnLocalStorage('ingresos', transaccion.obtenerHistorialIngresos());
   mostrarHistorialIngresos();
   actualizarSaldoTotal();
 });
 
-// Manejador para crear un nuevo objetivo de ahorro
+// Guardar el objetivo en localStorage
 document.getElementById('form-objetivo-ahorro').addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -92,8 +107,36 @@ document.getElementById('form-objetivo-ahorro').addEventListener('submit', (even
   const cantidadObjetivo = parseFloat(document.getElementById('cantidad-objetivo').value);
 
   objetivoAhorro.crearObjetivo(descripcionObjetivo, cantidadObjetivo);
+  guardarEnLocalStorage('objetivo', objetivoAhorro.obtenerDetallesObjetivo());
   
   const objetivoCreado = document.getElementById('objetivo-creado');
   objetivoCreado.textContent = `Objetivo: ${descripcionObjetivo} - Meta: $${cantidadObjetivo}`;
   objetivoCreado.style.display = 'block';
 });
+
+// Función para cargar datos desde `localStorage`
+const cargarDatos = () => {
+  const gastosGuardados = obtenerDeLocalStorage('gastos');
+  if (gastosGuardados) {
+    gastosGuardados.forEach(gasto => transaccion.registrarGasto(gasto.cantidad, gasto.descripcion, gasto.fecha));
+    mostrarHistorialGastos();
+  }
+
+  const ingresosGuardados = obtenerDeLocalStorage('ingresos');
+  if (ingresosGuardados) {
+    ingresosGuardados.forEach(ingreso => transaccion.registrarIngreso(ingreso.cantidad, ingreso.descripcion, ingreso.fecha));
+    mostrarHistorialIngresos();
+  }
+
+  const saldoGuardado = obtenerDeLocalStorage('saldoTotal');
+  if (saldoGuardado !== null) {
+    document.getElementById('saldo-total').textContent = `$${saldoGuardado}`;
+  }
+
+  const objetivoGuardado = obtenerDeLocalStorage('objetivo');
+  if (objetivoGuardado) {
+    const objetivoCreado = document.getElementById('objetivo-creado');
+    objetivoCreado.textContent = `Objetivo: ${objetivoGuardado.descripcion} - Meta: $${objetivoGuardado.cantidadObjetivo}`;
+    objetivoCreado.style.display = 'block';
+  }
+};
