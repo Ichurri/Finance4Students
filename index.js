@@ -12,6 +12,6 @@ document.getElementById('login-form').addEventListener('submit', (event) => {
     document.getElementById('login-container').style.display = 'none';
     document.getElementById('app-container').style.display = 'block';
   } else {
-    alert('Credenciales incorrectas'); // Mostrar alerta en caso de error
+    alert('Credenciales incorrectas'); 
   }
 });
