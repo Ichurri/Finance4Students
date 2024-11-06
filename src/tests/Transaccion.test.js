@@ -11,8 +11,7 @@ describe('Transaccion', () => {
     expect(historial[0]).toEqual({
       cantidad: 100,
       descripcion: 'Compra de libros',
-      fecha: '2024-10-31',
-      categoria: 'Sin Categoría',
+      fecha: '2024-10-31'
     });
   });
 
