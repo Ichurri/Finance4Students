@@ -1,10 +1,12 @@
 import { Usuario } from './src/clases/Usuario.js';
 import { Transaccion } from './src/clases/Transaccion.js';
 import { ObjetivoAhorro } from './src/clases/ObjetivoAhorro.js';
+import { Categoria } from './src/clases/Categoria.js';
 
 const usuario = Usuario();
 const transaccion = Transaccion();
 const objetivoAhorro = ObjetivoAhorro();
+const gestionCategorias = new Categoria();
 
 // Funciones auxiliares para `localStorage`
 const guardarEnLocalStorage = (clave, valor) => {
@@ -139,4 +141,39 @@ const cargarDatos = () => {
     objetivoCreado.textContent = `Objetivo: ${objetivoGuardado.descripcion} - Meta: $${objetivoGuardado.cantidadObjetivo}`;
     objetivoCreado.style.display = 'block';
   }
+
+  const categoriasGuardadas = obtenerDeLocalStorage('categorias');
+  if (categoriasGuardadas) {
+    categoriasGuardadas.forEach(categoria => gestionCategorias.crearCategoria(categoria));
+    actualizarListaCategorias();
+  }
+};
+
+// Gestionar Categorías
+document.getElementById('form-categoria').addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const nombreCategoria = document.getElementById('nombre-categoria').value;
+
+  try {
+    gestionCategorias.crearCategoria(nombreCategoria);
+    guardarEnLocalStorage('categorias', gestionCategorias.obtenerCategorias());
+    actualizarListaCategorias();
+    alert('Categoría creada con éxito');
+  } catch (error) {
+    alert(error.message); // Mostrar el mensaje de error correspondiente
+  }
+
+  document.getElementById('nombre-categoria').value = ''; // Limpiar el campo
+});
+
+const actualizarListaCategorias = () => {
+  const listaCategorias = document.getElementById('lista-categorias');
+  listaCategorias.innerHTML = '';
+
+  gestionCategorias.obtenerCategorias().forEach((categoria) => {
+    const li = document.createElement('li');
+    li.textContent = categoria;
+    listaCategorias.appendChild(li);
+  });
 };
