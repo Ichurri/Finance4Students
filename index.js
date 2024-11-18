@@ -102,14 +102,14 @@ document.getElementById('form-gasto').addEventListener('submit', (event) => {
 
   const cantidad = parseFloat(document.getElementById('cantidad-gasto').value);
   const descripcion = document.getElementById('descripcion-gasto').value;
-  const categoria = document.getElementById('categoria-gasto').value; // Obtener categoría seleccionada
+  const categoria = document.getElementById('categoria-gasto').value;
   const fecha = new Date().toLocaleDateString();
 
-  transaccion.registrarGasto(cantidad, descripcion, fecha, categoria); // Registrar gasto
-  guardarEnLocalStorage('gastos', transaccion.obtenerHistorialGastos()); // Guardar en localStorage
-  mostrarHistorialGastos(); // Actualizar historial en el DOM
-  actualizarSaldoTotal(); // Actualizar saldo total
+  const gasto = transaccion.registrarGasto(cantidad, descripcion, fecha, categoria);
+  guardarEnLocalStorage('gastos', transaccion.obtenerHistorialGastos());
+  mostrarHistorialGastos();
 });
+
 
 // Guardar un ingreso en localStorage
 document.getElementById('form-ingreso').addEventListener('submit', (event) => {
@@ -139,6 +139,43 @@ document.getElementById('form-objetivo-ahorro').addEventListener('submit', (even
   objetivoCreado.textContent = `Objetivo: ${descripcionObjetivo} - Meta: $${cantidadObjetivo}`;
   objetivoCreado.style.display = 'block';
 });
+
+document.getElementById('form-editar-objetivo').addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const nuevaDescripcion = document.getElementById('editar-descripcion-objetivo').value;
+  const nuevaCantidad = parseFloat(document.getElementById('editar-cantidad-objetivo').value);
+
+  try {
+    if (nuevaDescripcion) {
+      objetivoAhorro.editarDescripcion(nuevaDescripcion);
+    }
+    if (!isNaN(nuevaCantidad) && nuevaCantidad > 0) {
+      objetivoAhorro.editarCantidad(nuevaCantidad);
+    }
+
+    guardarEnLocalStorage('objetivo', objetivoAhorro.obtenerDetallesObjetivo());
+    mostrarObjetivo();
+    alert('Objetivo actualizado con éxito');
+  } catch (error) {
+    alert(error.message);
+  }
+});
+
+
+const mostrarObjetivo = () => {
+  const objetivo = obtenerDeLocalStorage('objetivo');
+  if (objetivo) {
+    const objetivoCreado = document.getElementById('objetivo-creado');
+    objetivoCreado.textContent = `Objetivo: ${objetivo.descripcion} - Meta: $${objetivo.cantidadObjetivo}`;
+    objetivoCreado.style.display = 'block';
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  mostrarObjetivo();
+});
+
 
 // Función para cargar datos desde `localStorage`
 const cargarDatos = () => {

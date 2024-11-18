@@ -3,9 +3,9 @@ export const Transaccion = () => {
   const historialIngresos = [];
 
   const registrarGasto = (cantidad, descripcion, fecha, categoria = 'Sin Categoría') => {
-    const gasto = { cantidad, descripcion, fecha, categoria }; // Crear el objeto del gasto
-    historialGastos.push(gasto); // Agregar el gasto al historial
-    return gasto; // Retornar el objeto para que sea verificable
+    const gasto = { cantidad, descripcion, fecha, categoria };
+    historialGastos.push(gasto);
+    return gasto; // Retornar el gasto para confirmación
   };
 
   const obtenerHistorialGastos = () => historialGastos;
