@@ -44,18 +44,21 @@ const actualizarSaldoTotal = () => {
 // Mostrar historial de gastos en la interfaz
 const mostrarHistorialGastos = () => {
   const cuerpoHistorialGastos = document.getElementById('cuerpo-historial-gastos');
-  cuerpoHistorialGastos.innerHTML = '';
+  cuerpoHistorialGastos.innerHTML = ''; // Limpiar contenido previo
 
+  // Agregar cada gasto del historial al DOM
   transaccion.obtenerHistorialGastos().forEach(gasto => {
     const fila = document.createElement('tr');
     fila.innerHTML = `
       <td>$${gasto.cantidad}</td>
       <td>${gasto.descripcion}</td>
       <td>${gasto.fecha}</td>
+      <td>${gasto.categoria}</td>
     `;
     cuerpoHistorialGastos.appendChild(fila);
   });
 };
+
 
 // Mostrar historial de ingresos en la interfaz
 const mostrarHistorialIngresos = () => {
@@ -73,18 +76,39 @@ const mostrarHistorialIngresos = () => {
   });
 };
 
+// Función para actualizar las opciones del select de categorías
+const actualizarOpcionesCategorias = () => {
+  const selectCategoriaGasto = document.getElementById('categoria-gasto');
+  selectCategoriaGasto.innerHTML = ''; // Limpiar las opciones existentes
+
+  // Agregar opción predeterminada "Sin Categoría"
+  const opcionDefault = document.createElement('option');
+  opcionDefault.value = 'Sin Categoría';
+  opcionDefault.textContent = 'Sin Categoría';
+  selectCategoriaGasto.appendChild(opcionDefault);
+
+  // Agregar las categorías creadas dinámicamente
+  gestionCategorias.obtenerCategorias().forEach((categoria) => {
+    const opcion = document.createElement('option');
+    opcion.value = categoria;
+    opcion.textContent = categoria;
+    selectCategoriaGasto.appendChild(opcion);
+  });
+};
+
 // Guardar un gasto en localStorage
 document.getElementById('form-gasto').addEventListener('submit', (event) => {
   event.preventDefault();
 
   const cantidad = parseFloat(document.getElementById('cantidad-gasto').value);
   const descripcion = document.getElementById('descripcion-gasto').value;
+  const categoria = document.getElementById('categoria-gasto').value; // Obtener categoría seleccionada
   const fecha = new Date().toLocaleDateString();
 
-  transaccion.registrarGasto(cantidad, descripcion, fecha);
-  guardarEnLocalStorage('gastos', transaccion.obtenerHistorialGastos());
-  mostrarHistorialGastos();
-  actualizarSaldoTotal();
+  transaccion.registrarGasto(cantidad, descripcion, fecha, categoria); // Registrar gasto
+  guardarEnLocalStorage('gastos', transaccion.obtenerHistorialGastos()); // Guardar en localStorage
+  mostrarHistorialGastos(); // Actualizar historial en el DOM
+  actualizarSaldoTotal(); // Actualizar saldo total
 });
 
 // Guardar un ingreso en localStorage
@@ -149,7 +173,7 @@ const cargarDatos = () => {
   }
 };
 
-// Gestionar Categorías
+// Llamar a la función cuando se cree una nueva categoría
 document.getElementById('form-categoria').addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -159,12 +183,18 @@ document.getElementById('form-categoria').addEventListener('submit', (event) => 
     gestionCategorias.crearCategoria(nombreCategoria);
     guardarEnLocalStorage('categorias', gestionCategorias.obtenerCategorias());
     actualizarListaCategorias();
+    actualizarOpcionesCategorias(); // Actualizar el select dinámico
     alert('Categoría creada con éxito');
   } catch (error) {
-    alert(error.message); // Mostrar el mensaje de error correspondiente
+    alert(error.message);
   }
 
   document.getElementById('nombre-categoria').value = ''; // Limpiar el campo
+});
+
+// Llamar a la función al cargar los datos desde localStorage
+document.addEventListener('DOMContentLoaded', () => {
+  actualizarOpcionesCategorias();
 });
 
 const actualizarListaCategorias = () => {
