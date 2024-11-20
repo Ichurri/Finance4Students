@@ -20,11 +20,19 @@ export const Transaccion = () => {
     return totalIngresos - totalGastos;
   };
 
+  const editarGasto = (indice, nuevaCantidad, nuevaDescripcion, nuevaFecha) => {
+    if (historialGastos[indice]) {
+      historialGastos[indice] = { cantidad: nuevaCantidad, descripcion: nuevaDescripcion, fecha: nuevaFecha };
+    }
+  };
+  
+
   return {
     registrarGasto,
     obtenerHistorialGastos,
     registrarIngreso,
     obtenerHistorialIngresos,
-    calcularSaldoTotal
+    calcularSaldoTotal,
+    editarGasto
   };
 };

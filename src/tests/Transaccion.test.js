@@ -48,4 +48,36 @@ describe('Transaccion', () => {
     const saldoTotal = transaccion.calcularSaldoTotal();
     expect(saldoTotal).toBe(0);
   });
+
+  // Editar un gasto
+  test('deberia editar un gasto', () => {
+    const transaccion = Transaccion();
+    transaccion.registrarGasto(100, 'CompraLibros', '2024-10-31');
+
+    transaccion.editarGasto(0, 150, 'Lapiceros y cuadernos', '2024-11-14')
+    const historial = transaccion.obtenerHistorialGastos();
+    expect(historial).toHaveLength(1);
+    expect(historial[0]).toEqual({
+      cantidad: 150,
+      descripcion: 'Lapiceros y cuadernos',
+      fecha: '2024-11-14'
+    });
+  });
+
+  test('no debería editar un gasto si el índice es inválido', () => {
+    const transaccion = Transaccion();
+    transaccion.registrarGasto(100, 'Compra de libros', '2024-10-31');
+    
+    // Intentar editar un gasto con un índice fuera de rango
+    transaccion.editarGasto(1, 200, 'Lapiceros y cuadernos', '2024-11-14');
+    
+    const historial = transaccion.obtenerHistorialGastos();
+    expect(historial).toHaveLength(1); // El gasto no debe haber cambiado
+    expect(historial[0]).toEqual({
+      cantidad: 100,
+      descripcion: 'Compra de libros',
+      fecha: '2024-10-31'
+    });
+  });
+
 });
