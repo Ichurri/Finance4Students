@@ -100,5 +100,52 @@ describe('Transaccion', () => {
     });
   });
   
+  test('debería eliminar un gasto correctamente', () => {
+    const transaccion = Transaccion();
+  
+    // Registrar algunos gastos
+    transaccion.registrarGasto(100, 'Compra de libros', '2024-10-31');
+    transaccion.registrarGasto(200, 'Compra de ropa', '2024-11-01');
+  
+    // Eliminar el primer gasto
+    transaccion.eliminarGasto(0);
+  
+    const historial = transaccion.obtenerHistorialGastos();
+    
+    // Verificar que el primer gasto ha sido eliminado
+    expect(historial).toHaveLength(1);
+    expect(historial[0]).toEqual({
+      cantidad: 200,
+      descripcion: 'Compra de ropa',
+      fecha: '2024-11-01'
+    });
+  });
+  
+  test('no debería eliminar un gasto si el índice es inválido', () => {
+    const transaccion = Transaccion();
+  
+    // Registrar algunos gastos
+    transaccion.registrarGasto(100, 'Compra de libros', '2024-10-31');
+    transaccion.registrarGasto(200, 'Compra de ropa', '2024-11-01');
+  
+    // Intentar eliminar un gasto en un índice fuera de rango
+    transaccion.eliminarGasto(2); // Índice 2 no existe
+  
+    const historial = transaccion.obtenerHistorialGastos();
+    
+    // Verificar que el historial de gastos sigue igual
+    expect(historial).toHaveLength(2);
+    expect(historial[0]).toEqual({
+      cantidad: 100,
+      descripcion: 'Compra de libros',
+      fecha: '2024-10-31'
+    });
+    expect(historial[1]).toEqual({
+      cantidad: 200,
+      descripcion: 'Compra de ropa',
+      fecha: '2024-11-01'
+    });
+  });
+  
 
 });

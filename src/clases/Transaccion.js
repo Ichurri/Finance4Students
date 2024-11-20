@@ -5,7 +5,7 @@ export const Transaccion = () => {
   const registrarGasto = (cantidad, descripcion, fecha) => {
     historialGastos.push({ cantidad, descripcion, fecha });
   };
-  
+
   const editarGasto = (indice, nuevaCantidad, nuevaDescripcion, nuevaFecha) => {
     if (indice >= 0 && indice < historialGastos.length) {
       historialGastos[indice] = {
@@ -15,6 +15,14 @@ export const Transaccion = () => {
       };
     }
   };
+
+  // Método para eliminar un gasto por índice
+  const eliminarGasto = (indice) => {
+  if (indice >= 0 && indice < historialGastos.length) {
+      historialGastos.splice(indice, 1);
+    };
+  };
+
 
   const obtenerHistorialGastos = () => historialGastos;
 
@@ -36,6 +44,7 @@ export const Transaccion = () => {
     registrarIngreso,
     obtenerHistorialIngresos,
     calcularSaldoTotal,
-    editarGasto
+    editarGasto,
+    eliminarGasto
   };
 };
