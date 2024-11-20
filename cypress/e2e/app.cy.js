@@ -42,6 +42,30 @@ describe('Gestión de Gastos', () => {
     cy.get('#cuerpo-historial-gastos').should('contain', 'Compra de libros');
   });
 
+  it('Debería permitir editar un gasto y actualizar el historial', () => {
+    // Primero, registrar un gasto
+    cy.get('#cantidad-gasto').type('100');
+    cy.get('#descripcion-gasto').type('Compra de libros');
+    cy.get('#form-gasto').submit();
+
+    // Verificar que el gasto se muestra en el historial
+    cy.get('#cuerpo-historial-gastos').should('contain', '100');
+    cy.get('#cuerpo-historial-gastos').should('contain', 'Compra de libros');
+
+    // Editar el gasto
+    cy.get('.editar-btn').first().click(); // Suponiendo que el botón de editar tiene la clase 'editar-btn'
+
+    // Cambiar los valores del gasto
+    cy.get('#cantidad-gasto').clear().type('150');
+    cy.get('#descripcion-gasto').clear().type('Compra de materiales');
+    cy.get('#form-gasto').submit();
+
+    // Verificar que el gasto ha sido actualizado en el historial
+    cy.get('#cuerpo-historial-gastos').should('contain', '150');
+    cy.get('#cuerpo-historial-gastos').should('contain', 'Compra de materiales');
+  });
+
+
 });
 
 describe('Gestión de Ingresos', () => {

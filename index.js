@@ -44,16 +44,47 @@ const mostrarHistorialGastos = () => {
   const cuerpoHistorialGastos = document.getElementById('cuerpo-historial-gastos');
   cuerpoHistorialGastos.innerHTML = '';
 
-  transaccion.obtenerHistorialGastos().forEach(gasto => {
+  transaccion.obtenerHistorialGastos().forEach((gasto, index) => {
     const fila = document.createElement('tr');
     fila.innerHTML = `
       <td>$${gasto.cantidad}</td>
       <td>${gasto.descripcion}</td>
       <td>${gasto.fecha}</td>
+      <td>
+        <button class="editar-btn" data-index="${index}">Editar</button>
+      </td>
     `;
     cuerpoHistorialGastos.appendChild(fila);
   });
 };
+
+// Asignar evento de clic a cada botón de editar
+document.querySelectorAll('.editar-btn').forEach((btn) => {
+  btn.addEventListener('click', (event) => {
+    const index = event.target.dataset.index; // Obtener el índice desde el data-index
+    const gasto = transaccion.obtenerHistorialGastos()[index]; // Obtener el gasto según el índice
+
+    // Llenar los campos con los datos del gasto seleccionado
+    document.getElementById('cantidad-gasto').value = gasto.cantidad;
+    document.getElementById('descripcion-gasto').value = gasto.descripcion;
+
+    // Cambiar la acción del formulario a edición
+    const formGasto = document.getElementById('form-gasto');
+    formGasto.onsubmit = (e) => {
+      e.preventDefault();
+      const nuevaCantidad = parseFloat(document.getElementById('cantidad-gasto').value);
+      const nuevaDescripcion = document.getElementById('descripcion-gasto').value;
+      const nuevaFecha = new Date().toLocaleDateString();
+
+      // Editar el gasto utilizando el índice
+      transaccion.editarGasto(index, nuevaCantidad, nuevaDescripcion, nuevaFecha);
+
+      // Actualizar la visualización del historial y el saldo
+      mostrarHistorialGastos();
+      actualizarSaldoTotal();
+    };
+  });
+});
 
 // Mostrar historial de ingresos en la interfaz
 const mostrarHistorialIngresos = () => {
