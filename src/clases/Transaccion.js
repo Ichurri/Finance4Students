@@ -5,6 +5,16 @@ export const Transaccion = () => {
   const registrarGasto = (cantidad, descripcion, fecha) => {
     historialGastos.push({ cantidad, descripcion, fecha });
   };
+  
+  const editarGasto = (indice, nuevaCantidad, nuevaDescripcion, nuevaFecha) => {
+    if (indice >= 0 && indice < historialGastos.length) {
+      historialGastos[indice] = {
+        cantidad: nuevaCantidad,
+        descripcion: nuevaDescripcion,
+        fecha: nuevaFecha
+      };
+    }
+  };
 
   const obtenerHistorialGastos = () => historialGastos;
 
@@ -19,14 +29,7 @@ export const Transaccion = () => {
     const totalGastos = historialGastos.reduce((total, gasto) => total + gasto.cantidad, 0);
     return totalIngresos - totalGastos;
   };
-
-  const editarGasto = (indice, nuevaCantidad, nuevaDescripcion, nuevaFecha) => {
-    if (historialGastos[indice]) {
-      historialGastos[indice] = { cantidad: nuevaCantidad, descripcion: nuevaDescripcion, fecha: nuevaFecha };
-    }
-  };
   
-
   return {
     registrarGasto,
     obtenerHistorialGastos,

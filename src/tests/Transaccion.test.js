@@ -80,4 +80,25 @@ describe('Transaccion', () => {
     });
   });
 
+  test('no debería editar un gasto si los valores son los mismos', () => {
+    const transaccion = Transaccion();
+  
+    // Registrar un gasto inicial
+    transaccion.registrarGasto(100, 'Compra de libros', '2024-10-31');
+  
+    // Editar el gasto con los mismos valores
+    transaccion.editarGasto(0, 100, 'Compra de libros', '2024-10-31');
+  
+    const historial = transaccion.obtenerHistorialGastos();
+    
+    // Verificar que el gasto no ha cambiado
+    expect(historial).toHaveLength(1);
+    expect(historial[0]).toEqual({
+      cantidad: 100,
+      descripcion: 'Compra de libros',
+      fecha: '2024-10-31'
+    });
+  });
+  
+
 });
