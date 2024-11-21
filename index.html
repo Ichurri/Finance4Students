@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Finanzas para Estudiantes</title>
 </head>
+
 <body>
   <div id="login-container">
     <h2>Iniciar Sesión</h2>
@@ -36,9 +38,11 @@
         <input type="number" id="cantidad-gasto" name="cantidad-gasto" required />
         <label for="descripcion-gasto">Descripción:</label>
         <input type="text" id="descripcion-gasto" name="descripcion-gasto" required />
-        <button type="submit">Agregar Gasto</button>
+        <button id="btn-agregar" type="submit">Agregar Gasto</button>
+        <button id="btn-actualizar" type="button" style="display: none;">Actualizar Gasto</button>
       </form>
     </section>
+
 
     <!-- Historial de Gastos -->
     <section id="historial-gastos-section">
@@ -105,4 +109,5 @@
 
   <script src="index.js" type="module"></script>
 </body>
+
 </html>

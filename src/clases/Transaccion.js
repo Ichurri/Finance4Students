@@ -15,11 +15,11 @@ export const Transaccion = () => {
       };
     }
   };
-
+  
   // Método para eliminar un gasto por índice
   const eliminarGasto = (indice) => {
   if (indice >= 0 && indice < historialGastos.length) {
-      historialGastos.splice(indice, 1);
+    historialGastos.splice(indice, 1);
     };
   };
 

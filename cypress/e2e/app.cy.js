@@ -36,7 +36,7 @@ describe('Gestión de Gastos', () => {
   it('Debería registrar un gasto y mostrarlo en el historial', () => {
     cy.get('#cantidad-gasto').type('100');
     cy.get('#descripcion-gasto').type('Compra de libros');
-    cy.get('#form-gasto').submit();
+    cy.get('#btn-agregar').click(); // Usar el botón "Agregar Gasto"
 
     cy.get('#cuerpo-historial-gastos').should('contain', '100');
     cy.get('#cuerpo-historial-gastos').should('contain', 'Compra de libros');
@@ -46,7 +46,7 @@ describe('Gestión de Gastos', () => {
     // Primero, registrar un gasto
     cy.get('#cantidad-gasto').type('100');
     cy.get('#descripcion-gasto').type('Compra de libros');
-    cy.get('#form-gasto').submit();
+    cy.get('#btn-agregar').click();
 
     // Verificar que el gasto se muestra en el historial
     cy.get('#cuerpo-historial-gastos').should('contain', '100');
@@ -55,16 +55,50 @@ describe('Gestión de Gastos', () => {
     // Editar el gasto
     cy.get('.editar-btn').first().click(); // Suponiendo que el botón de editar tiene la clase 'editar-btn'
 
+    // Verificar que el botón "Actualizar" aparece y "Agregar" desaparece
+    cy.get('#btn-actualizar').should('be.visible');
+    cy.get('#btn-agregar').should('not.be.visible');
+
     // Cambiar los valores del gasto
     cy.get('#cantidad-gasto').clear().type('150');
     cy.get('#descripcion-gasto').clear().type('Compra de materiales');
-    cy.get('#form-gasto').submit();
+    cy.get('#btn-actualizar').click(); // Usar el botón "Actualizar Gasto"
 
     // Verificar que el gasto ha sido actualizado en el historial
     cy.get('#cuerpo-historial-gastos').should('contain', '150');
     cy.get('#cuerpo-historial-gastos').should('contain', 'Compra de materiales');
+
+    // Verificar que el botón "Actualizar" desaparece y "Agregar" reaparece
+    cy.get('#btn-actualizar').should('not.be.visible');
+    cy.get('#btn-agregar').should('be.visible');
   });
 
+  it('Debería mantener el saldo total actualizado después de editar un gasto', () => {
+    // Registrar un ingreso
+    cy.get('#cantidad-ingreso').type('500');
+    cy.get('#descripcion-ingreso').type('Mesada');
+    cy.get('#form-ingreso').submit();
+    cy.get('#saldo-total').should('contain', '500');
+
+    // Registrar un gasto
+    cy.get('#cantidad-gasto').type('200');
+    cy.get('#descripcion-gasto').type('Compra de libros');
+    cy.get('#btn-agregar').click();
+    cy.get('#saldo-total').should('contain', '300'); // 500 - 200 = 300
+
+    // Editar el gasto
+    cy.get('.editar-btn').first().click();
+    cy.get('#cantidad-gasto').clear().type('100');
+    cy.get('#descripcion-gasto').clear().type('Compra de cuadernos');
+    cy.get('#btn-actualizar').click();
+
+    // Verificar que el saldo total se ha actualizado
+    cy.get('#saldo-total').should('contain', '400'); // 500 - 100 = 400
+
+    // Verificar que el botón "Actualizar" desaparece y "Agregar" reaparece
+    cy.get('#btn-actualizar').should('not.be.visible');
+    cy.get('#btn-agregar').should('be.visible');
+  });
 
 });
 
