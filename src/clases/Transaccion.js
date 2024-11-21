@@ -30,6 +30,16 @@ export const Transaccion = () => {
     historialIngresos.push({ cantidad, descripcion, fecha });
   };
 
+  const editarIngreso = (indice, nuevaCantidad, nuevaDescripcion, nuevaFecha) => {
+    if (indice >= 0 && indice < historialIngresos.length) {
+      historialIngresos[indice] = {
+        cantidad: nuevaCantidad,
+        descripcion: nuevaDescripcion,
+        fecha: nuevaFecha,
+      };
+    }
+  };
+
   const obtenerHistorialIngresos = () => historialIngresos;
 
   const calcularSaldoTotal = () => {
@@ -45,6 +55,7 @@ export const Transaccion = () => {
     obtenerHistorialIngresos,
     calcularSaldoTotal,
     editarGasto,
-    eliminarGasto
+    eliminarGasto,
+    editarIngreso
   };
 };

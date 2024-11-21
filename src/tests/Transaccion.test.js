@@ -146,6 +146,53 @@ describe('Transaccion', () => {
       fecha: '2024-11-01'
     });
   });
+
+
+  test("debería editar un ingreso correctamente", () => {
+    const transaccion = Transaccion();
+    transaccion.registrarIngreso(500, "Salario", "2024-11-01");
+    transaccion.editarIngreso(0, 600, "Pago freelance", "2024-11-02");
   
+    const historial = transaccion.obtenerHistorialIngresos();
+    expect(historial).toHaveLength(1);
+    expect(historial[0]).toEqual({
+      cantidad: 600,
+      descripcion: "Pago freelance",
+      fecha: "2024-11-02",
+    });
+  });
+  
+  test("no debería editar un ingreso si el índice es inválido", () => {
+    const transaccion = Transaccion();
+    transaccion.registrarIngreso(500, "Salario", "2024-11-01");
+  
+    // Intentar editar con un índice fuera de rango
+    transaccion.editarIngreso(1, 600, "Pago freelance", "2024-11-02");
+  
+    const historial = transaccion.obtenerHistorialIngresos();
+    expect(historial).toHaveLength(1);
+    expect(historial[0]).toEqual({
+      cantidad: 500,
+      descripcion: "Salario",
+      fecha: "2024-11-01",
+    });
+  });
+
+
+  test("no debería editar un ingreso si los valores son los mismos", () => {
+    const transaccion = Transaccion();
+    transaccion.registrarIngreso(500, "Salario", "2024-11-01");
+  
+    // Intentar editar sin cambiar valores
+    transaccion.editarIngreso(0, 500, "Salario", "2024-11-01");
+  
+    const historial = transaccion.obtenerHistorialIngresos();
+    expect(historial).toHaveLength(1);
+    expect(historial[0]).toEqual({
+      cantidad: 500,
+      descripcion: "Salario",
+      fecha: "2024-11-01",
+    });
+  });
 
 });
