@@ -40,6 +40,12 @@ export const Transaccion = () => {
     }
   };
 
+  const eliminarIngreso = (indice) => {
+    if (indice >= 0 && indice < historialIngresos.length) {
+      historialIngresos.splice(indice, 1);
+    }
+  };
+
   const obtenerHistorialIngresos = () => historialIngresos;
 
   const calcularSaldoTotal = () => {
@@ -56,6 +62,7 @@ export const Transaccion = () => {
     calcularSaldoTotal,
     editarGasto,
     eliminarGasto,
-    editarIngreso
+    editarIngreso,
+    eliminarIngreso
   };
 };

@@ -195,4 +195,30 @@ describe('Transaccion', () => {
     });
   });
 
+
+  test("debería eliminar un ingreso correctamente", () => {
+    const transaccion = Transaccion();
+    transaccion.registrarIngreso(200, "Salario", "2024-11-01");
+    transaccion.eliminarIngreso(0);
+
+    const historial = transaccion.obtenerHistorialIngresos();
+    expect(historial).toHaveLength(0);
+  });
+
+  test("no debería eliminar un ingreso si el índice es inválido", () => {
+    const transaccion = Transaccion();
+    transaccion.registrarIngreso(500, "Salario", "2024-11-01");
+  
+    // Intentar eliminar con un índice fuera de rango
+    transaccion.eliminarIngreso(1);
+  
+    const historial = transaccion.obtenerHistorialIngresos();
+    expect(historial).toHaveLength(1);
+    expect(historial[0]).toEqual({
+      cantidad: 500,
+      descripcion: "Salario",
+      fecha: "2024-11-01",
+    });
+  });
+
 });
