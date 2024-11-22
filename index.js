@@ -1,11 +1,13 @@
 import { Usuario } from "./src/clases/Usuario.js";
 import { ObjetivoAhorro } from "./src/clases/ObjetivoAhorro.js";
 import { Transaccion } from "./src/clases/Transaccion.js";
+import { Categorias } from "./src/clases/Categorias.js";
 import { transformSync } from "@babel/core";
 
 const usuario = Usuario();
 const transaccion = Transaccion();
 const objetivoAhorro = ObjetivoAhorro();
+const categorias = Categorias();
 
 // Funciones auxiliares para `localStorage`
 const guardarEnLocalStorage = (clave, valor) => {
@@ -234,29 +236,6 @@ botonActualizarIngreso.addEventListener("click", () => {
   actualizarSaldoTotal();
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Guardar un gasto en localStorage
 document.getElementById("form-gasto").addEventListener("submit", (event) => {
   event.preventDefault();
@@ -309,6 +288,43 @@ document
     objetivoCreado.style.display = "block";
   });
 
+  // Guardar la categoria en localStorage
+  document
+  .getElementById("form-categorias")
+  .addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const nombreCategoria = document.getElementById("nombre-categoria").value;
+
+    if (nombreCategoria.trim() === "") {
+      alert("Por favor, ingresa un nombre válido para la categoría.");
+      return;
+    }
+
+    categorias.crearCategoria(nombreCategoria);
+    const categoriasGuardadas = obtenerDeLocalStorage("categorias") || [];
+    categoriasGuardadas.push(nombreCategoria);
+    guardarEnLocalStorage("categorias", categoriasGuardadas);
+
+    mostrarCategorias();
+
+    document.getElementById("form-categorias").reset();
+  });
+
+const mostrarCategorias = () => {
+  const categoriasGuardadas = obtenerDeLocalStorage("categorias") || [];
+  const listaCategorias = document.getElementById("lista-categorias");
+  listaCategorias.innerHTML = ""; 
+
+  categoriasGuardadas.forEach((categoria) => {
+    const elementoCategoria = document.createElement("li");
+    elementoCategoria.textContent = categoria;
+    listaCategorias.appendChild(elementoCategoria);
+  });
+};
+
+document.addEventListener("DOMContentLoaded", mostrarCategorias);
+
 // Función para cargar datos desde `localStorage`
 const cargarDatos = () => {
   const gastosGuardados = obtenerDeLocalStorage("gastos");
@@ -341,5 +357,11 @@ const cargarDatos = () => {
     const objetivoCreado = document.getElementById("objetivo-creado");
     objetivoCreado.textContent = `Objetivo: ${objetivoGuardado.descripcion} - Meta: $${objetivoGuardado.cantidadObjetivo}`;
     objetivoCreado.style.display = "block";
+  }
+
+  const categoriasGuardadas = obtenerDeLocalStorage("categorias");
+  if (categoriasGuardadas) {
+    categoriasGuardadas.forEach((categoria) => categorias.crearCategoria(categoria));
+    mostrarCategorias();
   }
 };

@@ -162,5 +162,20 @@ describe('Gestión de Objetivos de Ahorro', () => {
     cy.get('#objetivo-creado').should('contain', 'Viaje');
     cy.get('#objetivo-creado').should('contain', '1000');
   });
+});
 
+describe('Gestión de Categorias', () => {
+
+  beforeEach(() => {
+    cy.visit('index.html');
+    cy.get('#username').type('estudiante');
+    cy.get('#password').type('12345');
+    cy.get('#login-form').submit();
+  });
+
+  it('Debería crear una categoria y mostrarla', () => {
+    cy.get('#nombre-categoria').type('Comidas');
+    cy.get('#form-categorias').submit();
+    cy.get('#lista-categorias').should('contain', 'Comidas');
+  });
 });
