@@ -178,4 +178,16 @@ describe('Gestión de Categorias', () => {
     cy.get('#form-categorias').submit();
     cy.get('#lista-categorias').should('contain', 'Comidas');
   });
+
+  it('Debería crear varias categorias y mostrarlas', () => {
+    cy.get('#nombre-categoria').type('Comidas');
+    cy.get('#form-categorias').submit();
+    cy.get('#nombre-categoria').type('Bebidas');
+    cy.get('#form-categorias').submit();
+    cy.get('#nombre-categoria').type('Salidas');
+    cy.get('#form-categorias').submit();
+    cy.get('#lista-categorias').should('contain', 'Comidas');
+    cy.get('#lista-categorias').should('contain', 'Bebidas');
+    cy.get('#lista-categorias').should('contain', 'Salidas');
+  });
 });
