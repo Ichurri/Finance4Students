@@ -141,23 +141,121 @@ botonActualizar.addEventListener("click", () => {
   actualizarSaldoTotal();
 });
 
-// Mostrar historial de ingresos en la interfaz
+
+// Gestión de Ingresos
+// Variables de Referencia para Ingresos
+const formIngreso = document.getElementById("form-ingreso");
+const botonAgregarIngreso = document.getElementById("btn-agregar-ingreso");
+const botonActualizarIngreso = document.getElementById("btn-actualizar-ingreso");
+let indexEnEdicionIngreso = null;
+
+
+// Mostrar Historial de Ingresos
 const mostrarHistorialIngresos = () => {
-  const cuerpoHistorialIngresos = document.getElementById(
-    "cuerpo-historial-ingresos"
-  );
+  const cuerpoHistorialIngresos = document.getElementById("cuerpo-historial-ingresos");
   cuerpoHistorialIngresos.innerHTML = "";
 
-  transaccion.obtenerHistorialIngresos().forEach((ingreso) => {
+  transaccion.obtenerHistorialIngresos().forEach((ingreso, index) => {
     const fila = document.createElement("tr");
     fila.innerHTML = `
-      <td>$${ingreso.cantidad}</td>
+      <td>${ingreso.cantidad}</td>
       <td>${ingreso.descripcion}</td>
       <td>${ingreso.fecha}</td>
+      <td>
+        <button class="editar-btn" data-index="${index}">Editar</button>
+        <button class="eliminar-btn" data-index="${index}">Eliminar</button>
+      </td>
     `;
     cuerpoHistorialIngresos.appendChild(fila);
   });
 };
+
+
+// Registrar Ingreso
+botonAgregarIngreso.addEventListener("click", (e) => {
+  e.preventDefault();
+  const cantidad = parseFloat(document.getElementById("cantidad-ingreso").value);
+  const descripcion = document.getElementById("descripcion-ingreso").value;
+  const fecha = new Date().toLocaleDateString();
+
+  if (isNaN(cantidad) || descripcion.trim() === "") {
+    alert("Por favor, completa los campos correctamente.");
+    return;
+  }
+
+  transaccion.registrarIngreso(cantidad, descripcion, fecha);
+  guardarEnLocalStorage("ingresos", transaccion.obtenerHistorialIngresos());
+  mostrarHistorialIngresos();
+  actualizarSaldoTotal();
+  formIngreso.reset();
+});
+
+// Editar y Eliminar Ingresos
+document.getElementById("cuerpo-historial-ingresos").addEventListener("click", (event) => {
+  const boton = event.target;
+
+  if (boton.classList.contains("editar-btn")) {
+    const index = boton.dataset.index;
+    const ingreso = transaccion.obtenerHistorialIngresos()[index];
+
+    document.getElementById("cantidad-ingreso").value = ingreso.cantidad;
+    document.getElementById("descripcion-ingreso").value = ingreso.descripcion;
+
+    indexEnEdicionIngreso = index;
+    botonAgregarIngreso.style.display = "none";
+    botonActualizarIngreso.style.display = "block";
+  }
+
+  if (boton.classList.contains("eliminar-btn")) {
+    const index = boton.dataset.index;
+    transaccion.eliminarIngreso(index);
+    mostrarHistorialIngresos();
+    actualizarSaldoTotal();
+  }
+});
+
+
+// Actualizar Ingreso Existente
+botonActualizarIngreso.addEventListener("click", () => {
+  const cantidad = parseFloat(document.getElementById("cantidad-ingreso").value);
+  const descripcion = document.getElementById("descripcion-ingreso").value;
+  const fecha = new Date().toLocaleDateString();
+
+  if (isNaN(cantidad) || descripcion.trim() === "") {
+    alert("Por favor, completa los campos correctamente.");
+    return;
+  }
+
+  transaccion.editarIngreso(indexEnEdicionIngreso, cantidad, descripcion, fecha);
+  formIngreso.reset();
+  botonAgregarIngreso.style.display = "block";
+  botonActualizarIngreso.style.display = "none";
+  mostrarHistorialIngresos();
+  actualizarSaldoTotal();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Guardar un gasto en localStorage
 document.getElementById("form-gasto").addEventListener("submit", (event) => {
