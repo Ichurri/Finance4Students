@@ -104,20 +104,30 @@ document
 // Agregar un nuevo gasto
 botonAgregar.addEventListener("click", (e) => {
   e.preventDefault();
+
   const cantidad = parseFloat(document.getElementById("cantidad-gasto").value);
   const descripcion = document.getElementById("descripcion-gasto").value;
+  const categoria = document.getElementById("selector-categoria").value; 
   const fecha = new Date().toLocaleDateString();
 
   if (isNaN(cantidad) || descripcion.trim() === "") {
-    alert("Por favor, completa los campos correctamente.");
+    alert("Por favor, completa todos los campos correctamente.");
     return;
   }
 
-  transaccion.registrarGasto(cantidad, descripcion, fecha);
+  if(categoria){
+    transaccion.registrarGasto(cantidad, `${descripcion} - Categoría: ${categoria}`, fecha);
+  }
+  else{
+    transaccion.registrarGasto(cantidad, `${descripcion}`, fecha);
+  }
+   
   formGasto.reset();
+  document.getElementById("categoria-seleccionada").textContent = "";
   mostrarHistorialGastos();
   actualizarSaldoTotal();
 });
+
 
 // Actualizar un gasto existente
 botonActualizar.addEventListener("click", () => {
@@ -198,15 +208,18 @@ document.getElementById("cuerpo-historial-ingresos").addEventListener("click", (
 
   if (boton.classList.contains("editar-btn")) {
     const index = boton.dataset.index;
-    const ingreso = transaccion.obtenerHistorialIngresos()[index];
-
-    document.getElementById("cantidad-ingreso").value = ingreso.cantidad;
-    document.getElementById("descripcion-ingreso").value = ingreso.descripcion;
-
-    indexEnEdicionIngreso = index;
-    botonAgregarIngreso.style.display = "none";
-    botonActualizarIngreso.style.display = "block";
+    const gasto = transaccion.obtenerHistorialGastos()[index];
+  
+    const [descripcion, categoria] = gasto.descripcion.split(" - Categoría: ");
+    document.getElementById("cantidad-gasto").value = gasto.cantidad;
+    document.getElementById("descripcion-gasto").value = descripcion;
+    document.getElementById("selector-categoria").value = categoria || "";
+  
+    indexEnEdicion = index;
+    botonAgregar.style.display = "none";
+    botonActualizar.style.display = "block";
   }
+  
 
   if (boton.classList.contains("eliminar-btn")) {
     const index = boton.dataset.index;
@@ -311,17 +324,39 @@ document
     document.getElementById("form-categorias").reset();
   });
 
-const mostrarCategorias = () => {
-  const categoriasGuardadas = obtenerDeLocalStorage("categorias") || [];
-  const listaCategorias = document.getElementById("lista-categorias");
-  listaCategorias.innerHTML = ""; 
-
-  categoriasGuardadas.forEach((categoria) => {
-    const elementoCategoria = document.createElement("li");
-    elementoCategoria.textContent = categoria;
-    listaCategorias.appendChild(elementoCategoria);
+  document.getElementById("selector-categoria").addEventListener("change", (event) => {
+    const categoriaSeleccionada = event.target.value;
+    const elementoCategoriaSeleccionada = document.getElementById("categoria-seleccionada");
+  
+    if (categoriaSeleccionada) {
+      elementoCategoriaSeleccionada.textContent = `Categoría seleccionada: ${categoriaSeleccionada}`;
+    } else {
+      elementoCategoriaSeleccionada.textContent = "";
+    }
   });
-};
+  
+
+  const mostrarCategorias = () => {
+    const categoriasGuardadas = obtenerDeLocalStorage("categorias") || [];
+    const listaCategorias = document.getElementById("lista-categorias");
+    const selectorCategoria = document.getElementById("selector-categoria");
+  
+    listaCategorias.innerHTML = "";
+    selectorCategoria.innerHTML = '<option value="">Selecciona una categoría</option>';
+  
+    categoriasGuardadas.forEach((categoria) => {
+      const elementoCategoria = document.createElement("li");
+      elementoCategoria.textContent = categoria;
+      listaCategorias.appendChild(elementoCategoria);
+  
+      // Añadir categoría al selector
+      const opcion = document.createElement("option");
+      opcion.value = categoria;
+      opcion.textContent = categoria;
+      selectorCategoria.appendChild(opcion);
+    });
+  };
+  
 
 document.addEventListener("DOMContentLoaded", mostrarCategorias);
 

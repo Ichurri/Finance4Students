@@ -191,3 +191,23 @@ describe('Gestión de Categorias', () => {
     cy.get('#lista-categorias').should('contain', 'Salidas');
   });
 });
+
+describe('Categorias en Gastos', () => {
+
+  beforeEach(() => {
+    cy.visit('index.html');
+    cy.get('#username').type('estudiante');
+    cy.get('#password').type('12345');
+    cy.get('#login-form').submit();
+  });
+
+  it('Debería crear una categoria y anadirla a un gasto', () => {
+    cy.get('#nombre-categoria').type('Comidas');
+    cy.get('#form-categorias').submit();
+    cy.get('#cantidad-gasto').type('100');
+    cy.get('#descripcion-gasto').type('Hamburguesa');
+    cy.get('#selector-categoria').select('Comidas');
+    cy.get('#btn-agregar').click();
+    cy.get('#cuerpo-historial-gastos').should('contain', 'Comidas');
+  });
+});
