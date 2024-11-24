@@ -2,7 +2,6 @@ import { Usuario } from "./src/clases/Usuario.js";
 import { ObjetivoAhorro } from "./src/clases/ObjetivoAhorro.js";
 import { Transaccion } from "./src/clases/Transaccion.js";
 import { Categorias } from "./src/clases/Categorias.js";
-import { transformSync } from "@babel/core";
 
 const usuario = Usuario();
 const transaccion = Transaccion();
