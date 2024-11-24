@@ -99,14 +99,13 @@ document
       actualizarSaldoTotal();
     }
   });
-
 // Agregar un nuevo gasto
 botonAgregar.addEventListener("click", (e) => {
   e.preventDefault();
 
   const cantidad = parseFloat(document.getElementById("cantidad-gasto").value);
   const descripcion = document.getElementById("descripcion-gasto").value;
-  const categoria = document.getElementById("selector-categoria").value; 
+  const categoria = document.getElementById("selector-categoria").value;
   const fecha = new Date().toLocaleDateString();
 
   if (isNaN(cantidad) || descripcion.trim() === "") {
@@ -114,20 +113,22 @@ botonAgregar.addEventListener("click", (e) => {
     return;
   }
 
-  if(categoria){
-    transaccion.registrarGasto(cantidad, `${descripcion} - Categoría: ${categoria}`, fecha);
-  }
-  else{
+  if (categoria) {
+    transaccion.registrarGasto(
+      cantidad,
+      `${descripcion} - Categoría: ${categoria}`,
+      fecha
+    );
+  } else {
     transaccion.registrarGasto(cantidad, `${descripcion}`, fecha);
   }
-   
+
   formGasto.reset();
   document.getElementById("categoria-seleccionada").textContent = "";
+  guardarEnLocalStorage("gastos", transaccion.obtenerHistorialGastos());
   mostrarHistorialGastos();
   actualizarSaldoTotal();
 });
-
-
 // Actualizar un gasto existente
 botonActualizar.addEventListener("click", () => {
   const cantidad = parseFloat(document.getElementById("cantidad-gasto").value);
@@ -138,32 +139,31 @@ botonActualizar.addEventListener("click", () => {
     alert("Por favor, completa los campos correctamente.");
     return;
   }
-
   // Actualizar el gasto en la lista
   transaccion.editarGasto(indexEnEdicion, cantidad, descripcion, fecha);
-
   // Restablecer el formulario y botones
   formGasto.reset();
   botonAgregar.style.display = "block";
   botonActualizar.style.display = "none";
-
   // Actualizar la vista
+  guardarEnLocalStorage("gastos", transaccion.obtenerHistorialGastos());
   mostrarHistorialGastos();
   actualizarSaldoTotal();
 });
-
 
 // Gestión de Ingresos
 // Variables de Referencia para Ingresos
 const formIngreso = document.getElementById("form-ingreso");
 const botonAgregarIngreso = document.getElementById("btn-agregar-ingreso");
-const botonActualizarIngreso = document.getElementById("btn-actualizar-ingreso");
+const botonActualizarIngreso = document.getElementById(
+  "btn-actualizar-ingreso"
+);
 let indexEnEdicionIngreso = null;
-
-
 // Mostrar Historial de Ingresos
 const mostrarHistorialIngresos = () => {
-  const cuerpoHistorialIngresos = document.getElementById("cuerpo-historial-ingresos");
+  const cuerpoHistorialIngresos = document.getElementById(
+    "cuerpo-historial-ingresos"
+  );
   cuerpoHistorialIngresos.innerHTML = "";
 
   transaccion.obtenerHistorialIngresos().forEach((ingreso, index) => {
@@ -180,12 +180,12 @@ const mostrarHistorialIngresos = () => {
     cuerpoHistorialIngresos.appendChild(fila);
   });
 };
-
-
 // Registrar Ingreso
 botonAgregarIngreso.addEventListener("click", (e) => {
   e.preventDefault();
-  const cantidad = parseFloat(document.getElementById("cantidad-ingreso").value);
+  const cantidad = parseFloat(
+    document.getElementById("cantidad-ingreso").value
+  );
   const descripcion = document.getElementById("descripcion-ingreso").value;
   const fecha = new Date().toLocaleDateString();
 
@@ -200,38 +200,38 @@ botonAgregarIngreso.addEventListener("click", (e) => {
   actualizarSaldoTotal();
   formIngreso.reset();
 });
-
 // Editar y Eliminar Ingresos
-document.getElementById("cuerpo-historial-ingresos").addEventListener("click", (event) => {
-  const boton = event.target;
+document
+  .getElementById("cuerpo-historial-ingresos")
+  .addEventListener("click", (event) => {
+    const boton = event.target;
 
-  if (boton.classList.contains("editar-btn")) {
-    const index = boton.dataset.index;
-    const gasto = transaccion.obtenerHistorialGastos()[index];
-  
-    const [descripcion, categoria] = gasto.descripcion.split(" - Categoría: ");
-    document.getElementById("cantidad-gasto").value = gasto.cantidad;
-    document.getElementById("descripcion-gasto").value = descripcion;
-    document.getElementById("selector-categoria").value = categoria || "";
-  
-    indexEnEdicion = index;
-    botonAgregar.style.display = "none";
-    botonActualizar.style.display = "block";
-  }
-  
+    if (boton.classList.contains("editar-btn")) {
+      const index = boton.dataset.index;
+      const gasto = transaccion.obtenerHistorialGastos()[index];
 
-  if (boton.classList.contains("eliminar-btn")) {
-    const index = boton.dataset.index;
-    transaccion.eliminarIngreso(index);
-    mostrarHistorialIngresos();
-    actualizarSaldoTotal();
-  }
-});
+      const [descripcion, categoria] =
+        gasto.descripcion.split(" - Categoría: ");
+      document.getElementById("cantidad-gasto").value = gasto.cantidad;
+      document.getElementById("descripcion-gasto").value = descripcion;
+      document.getElementById("selector-categoria").value = categoria || "";
 
-
+      indexEnEdicion = index;
+      botonAgregar.style.display = "none";
+      botonActualizar.style.display = "block";
+    }
+    if (boton.classList.contains("eliminar-btn")) {
+      const index = boton.dataset.index;
+      transaccion.eliminarIngreso(index);
+      mostrarHistorialIngresos();
+      actualizarSaldoTotal();
+    }
+  });
 // Actualizar Ingreso Existente
 botonActualizarIngreso.addEventListener("click", () => {
-  const cantidad = parseFloat(document.getElementById("cantidad-ingreso").value);
+  const cantidad = parseFloat(
+    document.getElementById("cantidad-ingreso").value
+  );
   const descripcion = document.getElementById("descripcion-ingreso").value;
   const fecha = new Date().toLocaleDateString();
 
@@ -239,15 +239,18 @@ botonActualizarIngreso.addEventListener("click", () => {
     alert("Por favor, completa los campos correctamente.");
     return;
   }
-
-  transaccion.editarIngreso(indexEnEdicionIngreso, cantidad, descripcion, fecha);
+  transaccion.editarIngreso(
+    indexEnEdicionIngreso,
+    cantidad,
+    descripcion,
+    fecha
+  );
   formIngreso.reset();
   botonAgregarIngreso.style.display = "block";
   botonActualizarIngreso.style.display = "none";
   mostrarHistorialIngresos();
   actualizarSaldoTotal();
 });
-
 // Guardar un gasto en localStorage
 document.getElementById("form-gasto").addEventListener("submit", (event) => {
   event.preventDefault();
@@ -258,11 +261,9 @@ document.getElementById("form-gasto").addEventListener("submit", (event) => {
 
   transaccion.registrarGasto(cantidad, descripcion, fecha);
   guardarEnLocalStorage("gastos", transaccion.obtenerHistorialGastos());
-
   mostrarHistorialGastos();
   actualizarSaldoTotal();
 });
-
 // Guardar un ingreso en localStorage
 document.getElementById("form-ingreso").addEventListener("submit", (event) => {
   event.preventDefault();
@@ -300,8 +301,8 @@ document
     objetivoCreado.style.display = "block";
   });
 
-  // Guardar la categoria en localStorage
-  document
+// Guardar la categoria en localStorage
+document
   .getElementById("form-categorias")
   .addEventListener("submit", (event) => {
     event.preventDefault();
@@ -323,39 +324,42 @@ document
     document.getElementById("form-categorias").reset();
   });
 
-  document.getElementById("selector-categoria").addEventListener("change", (event) => {
+document
+  .getElementById("selector-categoria")
+  .addEventListener("change", (event) => {
     const categoriaSeleccionada = event.target.value;
-    const elementoCategoriaSeleccionada = document.getElementById("categoria-seleccionada");
-  
+    const elementoCategoriaSeleccionada = document.getElementById(
+      "categoria-seleccionada"
+    );
+
     if (categoriaSeleccionada) {
       elementoCategoriaSeleccionada.textContent = `Categoría seleccionada: ${categoriaSeleccionada}`;
     } else {
       elementoCategoriaSeleccionada.textContent = "";
     }
   });
-  
 
-  const mostrarCategorias = () => {
-    const categoriasGuardadas = obtenerDeLocalStorage("categorias") || [];
-    const listaCategorias = document.getElementById("lista-categorias");
-    const selectorCategoria = document.getElementById("selector-categoria");
-  
-    listaCategorias.innerHTML = "";
-    selectorCategoria.innerHTML = '<option value="">Selecciona una categoría</option>';
-  
-    categoriasGuardadas.forEach((categoria) => {
-      const elementoCategoria = document.createElement("li");
-      elementoCategoria.textContent = categoria;
-      listaCategorias.appendChild(elementoCategoria);
-  
-      // Añadir categoría al selector
-      const opcion = document.createElement("option");
-      opcion.value = categoria;
-      opcion.textContent = categoria;
-      selectorCategoria.appendChild(opcion);
-    });
-  };
-  
+const mostrarCategorias = () => {
+  const categoriasGuardadas = obtenerDeLocalStorage("categorias") || [];
+  const listaCategorias = document.getElementById("lista-categorias");
+  const selectorCategoria = document.getElementById("selector-categoria");
+
+  listaCategorias.innerHTML = "";
+  selectorCategoria.innerHTML =
+    '<option value="">Selecciona una categoría</option>';
+
+  categoriasGuardadas.forEach((categoria) => {
+    const elementoCategoria = document.createElement("li");
+    elementoCategoria.textContent = categoria;
+    listaCategorias.appendChild(elementoCategoria);
+
+    // Añadir categoría al selector
+    const opcion = document.createElement("option");
+    opcion.value = categoria;
+    opcion.textContent = categoria;
+    selectorCategoria.appendChild(opcion);
+  });
+};
 
 document.addEventListener("DOMContentLoaded", mostrarCategorias);
 
@@ -364,7 +368,11 @@ const cargarDatos = () => {
   const gastosGuardados = obtenerDeLocalStorage("gastos");
   if (gastosGuardados) {
     gastosGuardados.forEach((gasto) =>
-      transaccion.registrarGasto(gasto.cantidad, gasto.descripcion, gasto.fecha)
+      transaccion.registrarGasto(
+        gasto.cantidad,
+        gasto.descripcion, 
+        gasto.fecha
+      )
     );
     mostrarHistorialGastos();
   }
@@ -395,7 +403,9 @@ const cargarDatos = () => {
 
   const categoriasGuardadas = obtenerDeLocalStorage("categorias");
   if (categoriasGuardadas) {
-    categoriasGuardadas.forEach((categoria) => categorias.crearCategoria(categoria));
+    categoriasGuardadas.forEach((categoria) =>
+      categorias.crearCategoria(categoria)
+    );
     mostrarCategorias();
   }
 };
