@@ -45,10 +45,8 @@ const actualizarSaldoTotal = () => {
 const botonAgregar = document.getElementById("btn-agregar");
 const botonActualizar = document.getElementById("btn-actualizar");
 const formGasto = document.getElementById("form-gasto");
-
 // Variable para almacenar el índice del gasto en edición
 let indexEnEdicion = null;
-
 // Función para mostrar el historial de gastos
 function mostrarHistorialGastos() {
   const cuerpoHistorial = document.getElementById("cuerpo-historial-gastos");
@@ -69,8 +67,7 @@ function mostrarHistorialGastos() {
     cuerpoHistorial.appendChild(fila);
   });
 }
-
-// Delegación de eventos para editar o eliminar
+// Editar o eliminar Gastos
 document
   .getElementById("cuerpo-historial-gastos")
   .addEventListener("click", (event) => {
@@ -90,7 +87,6 @@ document
       botonAgregar.style.display = "none";
       botonActualizar.style.display = "block";
     }
-
     // Eliminar gasto
     if (boton.classList.contains("eliminar-btn")) {
       const index = boton.dataset.index;
@@ -99,11 +95,13 @@ document
       actualizarSaldoTotal();
     }
   });
+
 // Agregar un nuevo gasto
 botonAgregar.addEventListener("click", (e) => {
   e.preventDefault();
-
-  const cantidad = parseFloat(document.getElementById("cantidad-gasto").value);
+  const cantidad = parseFloat(
+    document.getElementById("cantidad-gasto").value
+  );
   const descripcion = document.getElementById("descripcion-gasto").value;
   const categoria = document.getElementById("selector-categoria").value;
   const fecha = new Date().toLocaleDateString();
@@ -123,11 +121,11 @@ botonAgregar.addEventListener("click", (e) => {
     transaccion.registrarGasto(cantidad, `${descripcion}`, fecha);
   }
 
-  formGasto.reset();
   document.getElementById("categoria-seleccionada").textContent = "";
   guardarEnLocalStorage("gastos", transaccion.obtenerHistorialGastos());
   mostrarHistorialGastos();
   actualizarSaldoTotal();
+  formGasto.reset();
 });
 // Actualizar un gasto existente
 botonActualizar.addEventListener("click", () => {
@@ -140,7 +138,12 @@ botonActualizar.addEventListener("click", () => {
     return;
   }
   // Actualizar el gasto en la lista
-  transaccion.editarGasto(indexEnEdicion, cantidad, descripcion, fecha);
+  transaccion.editarGasto(
+    indexEnEdicion, 
+    cantidad, 
+    descripcion, 
+    fecha
+  );
   // Restablecer el formulario y botones
   formGasto.reset();
   botonAgregar.style.display = "block";
@@ -155,31 +158,56 @@ botonActualizar.addEventListener("click", () => {
 // Variables de Referencia para Ingresos
 const formIngreso = document.getElementById("form-ingreso");
 const botonAgregarIngreso = document.getElementById("btn-agregar-ingreso");
-const botonActualizarIngreso = document.getElementById(
-  "btn-actualizar-ingreso"
-);
+const botonActualizarIngreso = document.getElementById("btn-actualizar-ingreso");
 let indexEnEdicionIngreso = null;
 // Mostrar Historial de Ingresos
-const mostrarHistorialIngresos = () => {
-  const cuerpoHistorialIngresos = document.getElementById(
-    "cuerpo-historial-ingresos"
-  );
+function mostrarHistorialIngresos() {
+  const cuerpoHistorialIngresos = document.getElementById
+  ("cuerpo-historial-ingresos");
   cuerpoHistorialIngresos.innerHTML = "";
+  const ingresos = transaccion.obtenerHistorialIngresos();
 
-  transaccion.obtenerHistorialIngresos().forEach((ingreso, index) => {
+  ingresos.forEach((ingreso, index) => {
     const fila = document.createElement("tr");
     fila.innerHTML = `
       <td>${ingreso.cantidad}</td>
       <td>${ingreso.descripcion}</td>
       <td>${ingreso.fecha}</td>
       <td>
-        <button class="editar-btn" data-index="${index}">Editar</button>
-        <button class="eliminar-btn" data-index="${index}">Eliminar</button>
+        <button class="editar-btn-ingreso" data-index="${index}">Editar</button>
+        <button class="eliminar-btn-ingreso" data-index="${index}">Eliminar</button>
       </td>
     `;
     cuerpoHistorialIngresos.appendChild(fila);
   });
-};
+}
+
+// Editar y Eliminar Ingresos
+document
+  .getElementById("cuerpo-historial-ingresos")
+  .addEventListener("click", (event) => {
+    const boton = event.target;
+
+    // Editar ingreso
+    if (boton.classList.contains("editar-btn-ingreso")) {
+      const index = boton.dataset.index;
+      const ingreso = transaccion.obtenerHistorialIngresos()[index];
+
+      document.getElementById("cantidad-ingreso").value = ingreso.cantidad;
+      document.getElementById("descripcion-ingreso").value = ingreso.descripcion;
+
+      indexEnEdicionIngreso = index;
+      botonAgregarIngreso.style.display = "none";
+      botonActualizarIngreso.style.display = "block";
+    }
+    // Eliminar Ingreso
+    if (boton.classList.contains("eliminar-btn-ingreso")) {
+      const index = boton.dataset.index;
+      transaccion.eliminarIngreso(index);
+      mostrarHistorialIngresos();
+      actualizarSaldoTotal();
+    }
+  });
 // Registrar Ingreso
 botonAgregarIngreso.addEventListener("click", (e) => {
   e.preventDefault();
@@ -200,33 +228,7 @@ botonAgregarIngreso.addEventListener("click", (e) => {
   actualizarSaldoTotal();
   formIngreso.reset();
 });
-// Editar y Eliminar Ingresos
-document
-  .getElementById("cuerpo-historial-ingresos")
-  .addEventListener("click", (event) => {
-    const boton = event.target;
 
-    if (boton.classList.contains("editar-btn")) {
-      const index = boton.dataset.index;
-      const gasto = transaccion.obtenerHistorialGastos()[index];
-
-      const [descripcion, categoria] =
-        gasto.descripcion.split(" - Categoría: ");
-      document.getElementById("cantidad-gasto").value = gasto.cantidad;
-      document.getElementById("descripcion-gasto").value = descripcion;
-      document.getElementById("selector-categoria").value = categoria || "";
-
-      indexEnEdicion = index;
-      botonAgregar.style.display = "none";
-      botonActualizar.style.display = "block";
-    }
-    if (boton.classList.contains("eliminar-btn")) {
-      const index = boton.dataset.index;
-      transaccion.eliminarIngreso(index);
-      mostrarHistorialIngresos();
-      actualizarSaldoTotal();
-    }
-  });
 // Actualizar Ingreso Existente
 botonActualizarIngreso.addEventListener("click", () => {
   const cantidad = parseFloat(
@@ -245,9 +247,11 @@ botonActualizarIngreso.addEventListener("click", () => {
     descripcion,
     fecha
   );
+  // Restablecer el formulario y botones
   formIngreso.reset();
   botonAgregarIngreso.style.display = "block";
   botonActualizarIngreso.style.display = "none";
+  guardarEnLocalStorage("ingresos", transaccion.obtenerHistorialIngresos());
   mostrarHistorialIngresos();
   actualizarSaldoTotal();
 });
@@ -368,11 +372,7 @@ const cargarDatos = () => {
   const gastosGuardados = obtenerDeLocalStorage("gastos");
   if (gastosGuardados) {
     gastosGuardados.forEach((gasto) =>
-      transaccion.registrarGasto(
-        gasto.cantidad,
-        gasto.descripcion, 
-        gasto.fecha
-      )
+      transaccion.registrarGasto(gasto.cantidad, gasto.descripcion, gasto.fecha)
     );
     mostrarHistorialGastos();
   }
