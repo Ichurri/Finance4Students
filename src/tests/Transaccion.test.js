@@ -15,6 +15,17 @@ describe('Transaccion', () => {
     });
   });
 
+  test("debería calcular el saldo total correctamente con valores no numéricos", () => {
+    const transaccion = Transaccion();
+  
+    transaccion.registrarIngreso("abc", "Ingreso inválido", "2024-11-01");
+    transaccion.registrarGasto("xyz", "Gasto inválido", "2024-11-02",'');
+  
+    const saldoTotal = transaccion.calcularSaldoTotal();
+
+    expect(saldoTotal).toBe(0);
+  });
+
   test('debería registrar un ingreso con cantidad, descripción y fecha', () => {
     const transaccion = Transaccion();
     transaccion.registrarIngreso(500, 'Mesada', '2024-10-31');
@@ -54,11 +65,12 @@ describe('Transaccion', () => {
     const transaccion = Transaccion();
     transaccion.registrarGasto(100, 'CompraLibros', '2024-10-31');
 
-    transaccion.editarGasto(0, 150, 'Lapiceros y cuadernos', '2024-11-14')
+    transaccion.editarGasto(0, 150, 'Lapiceros y cuadernos','', '2024-11-14')
     const historial = transaccion.obtenerHistorialGastos();
     expect(historial).toHaveLength(1);
     expect(historial[0]).toEqual({
       cantidad: 150,
+      categoria:"",
       descripcion: 'Lapiceros y cuadernos',
       fecha: '2024-11-14'
     });
@@ -66,16 +78,17 @@ describe('Transaccion', () => {
 
   test('no debería editar un gasto si el índice es inválido', () => {
     const transaccion = Transaccion();
-    transaccion.registrarGasto(100, 'Compra de libros', '2024-10-31');
+    transaccion.registrarGasto(100, 'Compra de libros', '2024-10-31','Comida');
     
     // Intentar editar un gasto con un índice fuera de rango
-    transaccion.editarGasto(1, 200, 'Lapiceros y cuadernos', '2024-11-14');
+    transaccion.editarGasto(1, 200, 'Lapiceros y cuadernos', '', '2024-11-14');
     
     const historial = transaccion.obtenerHistorialGastos();
     expect(historial).toHaveLength(1); // El gasto no debe haber cambiado
     expect(historial[0]).toEqual({
       cantidad: 100,
       descripcion: 'Compra de libros',
+      categoria:"Comida",
       fecha: '2024-10-31'
     });
   });
@@ -84,10 +97,10 @@ describe('Transaccion', () => {
     const transaccion = Transaccion();
   
     // Registrar un gasto inicial
-    transaccion.registrarGasto(100, 'Compra de libros', '2024-10-31');
+    transaccion.registrarGasto(100, 'Compra de libros', '2024-10-31', "Comida");
   
     // Editar el gasto con los mismos valores
-    transaccion.editarGasto(0, 100, 'Compra de libros', '2024-10-31');
+    transaccion.editarGasto(0, 100, 'Compra de libros','' ,'2024-10-31');
   
     const historial = transaccion.obtenerHistorialGastos();
     
@@ -95,6 +108,7 @@ describe('Transaccion', () => {
     expect(historial).toHaveLength(1);
     expect(historial[0]).toEqual({
       cantidad: 100,
+      categoria:"",
       descripcion: 'Compra de libros',
       fecha: '2024-10-31'
     });

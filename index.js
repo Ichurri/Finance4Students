@@ -58,6 +58,7 @@ function mostrarHistorialGastos() {
     fila.innerHTML = `
       <td>${gasto.cantidad}</td>
       <td>${gasto.descripcion}</td>
+      <td>${gasto.categoria}</td>
       <td>${gasto.fecha}</td>
       <td>
         <button class="editar-btn" data-index="${index}">Editar</button>
@@ -81,6 +82,7 @@ document
       // Rellenar los campos del formulario
       document.getElementById("cantidad-gasto").value = gasto.cantidad;
       document.getElementById("descripcion-gasto").value = gasto.descripcion;
+      document.getElementById("selector-categoria").value = gasto.categoria;
 
       // Configurar el índice en edición y mostrar botón de actualizar
       indexEnEdicion = index;
@@ -114,11 +116,13 @@ botonAgregar.addEventListener("click", (e) => {
   if (categoria) {
     transaccion.registrarGasto(
       cantidad,
-      `${descripcion} - Categoría: ${categoria}`,
-      fecha
+      descripcion,
+      fecha,
+      categoria
+      
     );
   } else {
-    transaccion.registrarGasto(cantidad, `${descripcion}`, fecha);
+    transaccion.registrarGasto(cantidad, descripcion,`sin categoria`, fecha);
   }
 
   document.getElementById("categoria-seleccionada").textContent = "";
@@ -132,6 +136,7 @@ botonActualizar.addEventListener("click", () => {
   const cantidad = parseFloat(document.getElementById("cantidad-gasto").value);
   const descripcion = document.getElementById("descripcion-gasto").value;
   const fecha = new Date().toLocaleDateString();
+  const categoria = document.getElementById("selector-categoria").value;
 
   if (isNaN(cantidad) || descripcion.trim() === "") {
     alert("Por favor, completa los campos correctamente.");
@@ -142,6 +147,7 @@ botonActualizar.addEventListener("click", () => {
     indexEnEdicion, 
     cantidad, 
     descripcion, 
+    categoria,
     fecha
   );
   // Restablecer el formulario y botones
@@ -372,7 +378,7 @@ const cargarDatos = () => {
   const gastosGuardados = obtenerDeLocalStorage("gastos");
   if (gastosGuardados) {
     gastosGuardados.forEach((gasto) =>
-      transaccion.registrarGasto(gasto.cantidad, gasto.descripcion, gasto.fecha)
+      transaccion.registrarGasto(gasto.cantidad, gasto.descripcion, gasto.fecha, gasto.categoria)
     );
     mostrarHistorialGastos();
   }

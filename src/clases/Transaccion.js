@@ -3,16 +3,17 @@ export const Transaccion = () => {
   const historialIngresos = [];
 
   // Registrar un gasto
-  const registrarGasto = (cantidad, descripcion, fecha) => {
-    historialGastos.push({ cantidad: parseFloat(cantidad) || 0, descripcion, fecha });
+  const registrarGasto = (cantidad, descripcion, fecha, categoria) => {
+    historialGastos.push({ cantidad: parseFloat(cantidad), descripcion, categoria, fecha });
   };
 
   // Editar un gasto
-  const editarGasto = (indice, nuevaCantidad, nuevaDescripcion, nuevaFecha) => {
+  const editarGasto = (indice, nuevaCantidad, nuevaDescripcion, nuevaCategoria, nuevaFecha) => {
     if (indice >= 0 && indice < historialGastos.length) {
       historialGastos[indice] = {
-        cantidad: parseFloat(nuevaCantidad) || 0,
+        cantidad: parseFloat(nuevaCantidad),
         descripcion: nuevaDescripcion,
+        categoria: nuevaCategoria,
         fecha: nuevaFecha,
       };
     }
@@ -30,14 +31,14 @@ export const Transaccion = () => {
 
   // Registrar un ingreso
   const registrarIngreso = (cantidad, descripcion, fecha) => {
-    historialIngresos.push({ cantidad: parseFloat(cantidad) || 0, descripcion, fecha });
+    historialIngresos.push({ cantidad: parseFloat(cantidad), descripcion, fecha });
   };
 
   // Editar un ingreso
   const editarIngreso = (indice, nuevaCantidad, nuevaDescripcion, nuevaFecha) => {
     if (indice >= 0 && indice < historialIngresos.length) {
       historialIngresos[indice] = {
-        cantidad: parseFloat(nuevaCantidad) || 0,
+        cantidad: parseFloat(nuevaCantidad),
         descripcion: nuevaDescripcion,
         fecha: nuevaFecha,
       };
