@@ -1,28 +1,22 @@
 export const ObjetivoAhorro = () => {
-  let descripcion = '';
-  let cantidadObjetivo = 0;
-  let presupuesto = 0;
+  let objetivos = [];
 
-  const crearObjetivo = (nuevaDescripcion, nuevaCantidadObjetivo) => {
-    descripcion = nuevaDescripcion;
-    cantidadObjetivo = nuevaCantidadObjetivo;
+  const crearObjetivo = (descripcion, cantidadObjetivo) => {
+    const nuevoObjetivo = { descripcion, cantidadObjetivo };
+    objetivos.push(nuevoObjetivo);
   };
 
-  const obtenerDetallesObjetivo = () => ({
-    descripcion,
-    cantidadObjetivo
-  });
+  const obtenerObjetivos = () => objetivos;
 
-  const definirPresupuesto = (nuevoPresupuesto) => {
-    presupuesto = nuevoPresupuesto;
+  const cargarObjetivos = (objetivosGuardados) => {
+    if (Array.isArray(objetivosGuardados)) {
+      objetivos = objetivosGuardados;
+    }
   };
-
-  const obtenerPresupuesto = () => presupuesto;
 
   return {
     crearObjetivo,
-    obtenerDetallesObjetivo,
-    definirPresupuesto,
-    obtenerPresupuesto
+    obtenerObjetivos,
+    cargarObjetivos,
   };
 };
