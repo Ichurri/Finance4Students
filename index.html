@@ -50,46 +50,6 @@
 
     <hr>
 
-    <h1>Gestion de Gastos</h1>
-    <!-- Registrar Nuevo Gasto -->
-    <section id="registro-gasto-section">
-      <h2>Registrar Gasto</h2>
-      <form id="form-gasto">
-        <label for="cantidad-gasto">Cantidad:</label>
-        <input type="number" id="cantidad-gasto" name="cantidad-gasto" required />
-        <label for="descripcion-gasto">Descripción:</label>
-        <input type="text" id="descripcion-gasto" name="descripcion-gasto" required />
-        <label for="selector-categoria">Categoría:</label>
-        <select id="selector-categoria">
-          <option value="">Selecciona una categoría</option>
-        </select>
-        <p id="categoria-seleccionada"></p>
-        <button id="btn-agregar" type="submit">Agregar Gasto</button>
-        <button id="btn-actualizar" type="button" style="display: none;">Actualizar Gasto</button>
-      </form>
-    </section>
-
-
-    <!-- Historial de Gastos -->
-    <section id="historial-gastos-section">
-      <h2>Historial de Gastos</h2>
-      <table id="tabla-historial-gastos">
-        <thead>
-          <tr>
-            <th>Cantidad</th>
-            <th>Descripción</th>
-            <th>Categoria</th>
-            <th>Fecha</th>
-          </tr>
-        </thead>
-        <tbody id="cuerpo-historial-gastos">
-          <!-- Los gastos se mostrarán aquí dinámicamente -->
-        </tbody>
-      </table>
-    </section>
-
-    <hr>
-
     <h1>Gestion de Ingresos</h1>
     <!-- Registrar Nuevo Ingreso -->
     <section id="registro-ingreso-section">
@@ -123,7 +83,49 @@
     </section>
 
     <hr>
+
+    <h1>Gestion de Gastos</h1>
+    <!-- Registrar Nuevo Gasto -->
+    <section id="registro-gasto-section">
+      <h2>Registrar Gasto</h2>
+      <form id="form-gasto">
+        <label for="cantidad-gasto">Cantidad:</label>
+        <input type="number" id="cantidad-gasto" name="cantidad-gasto" required />
+        <label for="descripcion-gasto">Descripción:</label>
+        <input type="text" id="descripcion-gasto" name="descripcion-gasto" required />
+        <label for="selector-categoria">Categoría:</label>
+        <select id="selector-categoria">
+          <option value="">Selecciona una categoría</option>
+        </select>
+        <p id="categoria-seleccionada"></p>
+        <button id="btn-agregar" type="submit">Agregar Gasto</button>
+        <button id="btn-actualizar" type="button" style="display: none;">Actualizar Gasto</button>
+      </form>
+    </section>
+
     
+
+    <!-- Historial de Gastos -->
+    <section id="historial-gastos-section">
+      <h2>Historial de Gastos</h2>
+      <table id="tabla-historial-gastos">
+        <thead>
+          <tr>
+            <th>Cantidad</th>
+            <th>Descripción</th>
+            <th>Categoria</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpo-historial-gastos">
+          <!-- Los gastos se mostrarán aquí dinámicamente -->
+        </tbody>
+      </table>
+    </section>
+
+    <hr>
+
+   
     <h1>Gestion de Objetivos de Ahorro</h1>
     <!-- Gestión de Objetivos de Ahorro -->
     <section id="objetivo-ahorro-section">
@@ -131,10 +133,10 @@
       <form id="form-objetivo-ahorro">
         <label for="descripcion-objetivo">Descripción:</label>
         <input type="text" id="descripcion-objetivo" name="descripcion-objetivo" required />
-        <br />
+        
         <label for="cantidad-objetivo">Cantidad Objetivo:</label>
         <input type="number" id="cantidad-objetivo" name="cantidad-objetivo" required />
-        <br />
+        
         <button type="submit">Crear Objetivo</button>
       </form>
       <p id="objetivo-creado"></p> <!-- Muestra el objetivo creado -->

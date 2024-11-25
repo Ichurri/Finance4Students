@@ -120,6 +120,24 @@ describe('Gestión de Ingresos', () => {
     cy.get('#cuerpo-historial-ingresos').should('contain', 'Mesada');
   });
 
+  it('Debería permitir editar un ingreso y actualizar el historial', () => {
+    cy.get('#cantidad-ingreso').type('500');
+    cy.get('#descripcion-ingreso').type('Mesada');
+    cy.get('#form-ingreso').submit();
+
+    cy.get('#cuerpo-historial-ingresos').should('contain', '500');
+    cy.get('#cuerpo-historial-ingresos').should('contain', 'Mesada');
+
+    cy.get('.editar-btn-ingreso').first().click();
+
+    cy.get('#cantidad-ingreso').clear().type('600');
+    cy.get('#descripcion-ingreso').clear().type('Pago freelance');
+    cy.get('#btn-actualizar-ingreso').click();
+
+    cy.get('#cuerpo-historial-ingresos').should('contain', '600');
+    cy.get('#cuerpo-historial-ingresos').should('contain', 'Pago freelance');
+  });
+
 });
 
 describe('Cálculo de Saldo Total', () => {
