@@ -9,9 +9,7 @@ export const ObjetivoAhorro = () => {
   const obtenerObjetivos = () => objetivos;
 
   const cargarObjetivos = (objetivosGuardados) => {
-    if (Array.isArray(objetivosGuardados)) {
       objetivos = objetivosGuardados;
-    }
   };
 
   return {
