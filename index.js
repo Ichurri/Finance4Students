@@ -365,7 +365,7 @@ const mostrarObjetivos = () => {
     elemento.innerHTML = `
       <strong>${objetivo.descripcion}</strong>: $${objetivo.cantidadObjetivo.toFixed(2)}
       <button class="editar-objetivo" data-index="${index}">Editar</button>
-      <button class="eliminar-objetivo" data-index="${index}">Eliminar</button>
+      <button class="completar-objetivo" data-index="${index}">Completado</button>
     `;
     listaObjetivos.appendChild(elemento);
   });
@@ -415,11 +415,11 @@ document.getElementById("form-objetivo-ahorro").addEventListener("submit", (even
   actualizarTextoBoton(); // Restablecer el texto del botón
 });
 
-// Eliminar o editar un objetivo
+// Completar o editar un objetivo
 document.getElementById("lista-objetivos").addEventListener("click", (event) => {
   const objetivos = objetivoAhorro.obtenerObjetivos();
 
-  if (event.target.classList.contains("eliminar-objetivo")) {
+  if (event.target.classList.contains("completar-objetivo")) {
     const index = event.target.dataset.index;
     objetivos.splice(index, 1);
 
