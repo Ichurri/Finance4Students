@@ -261,17 +261,14 @@ document
   .addEventListener("click", (event) => {
     const boton = event.target;
 
-    // Editar gasto
     if (boton.classList.contains("editar-btn")) {
       const index = boton.dataset.index;
       const gasto = transaccion.obtenerHistorialGastos()[index];
 
-      // Rellenar los campos del formulario
       document.getElementById("cantidad-gasto").value = gasto.cantidad;
       document.getElementById("descripcion-gasto").value = gasto.descripcion;
       document.getElementById("selector-categoria").value = gasto.categoria;
 
-      // Configurar el índice en edición y mostrar botón de actualizar
       indexEnEdicion = index;
       botonAgregar.style.display = "none";
       botonActualizar.style.display = "block";
@@ -354,10 +351,9 @@ const mostrarHistorialGastos = () => {
 // Variable para guardar el índice del objetivo que se está editando
 let indiceEdicion = null;
 
-// Mostrar todos los objetivos guardados
 const mostrarObjetivos = () => {
   const listaObjetivos = document.getElementById("lista-objetivos");
-  listaObjetivos.innerHTML = ""; // Limpiar la lista antes de actualizar
+  listaObjetivos.innerHTML = ""; 
 
   const objetivos = objetivoAhorro.obtenerObjetivos();
   objetivos.forEach((objetivo, index) => {
@@ -399,20 +395,18 @@ document.getElementById("form-objetivo-ahorro").addEventListener("submit", (even
   }
 
   if (indiceEdicion !== null) {
-    // Editar objetivo existente
     const objetivos = objetivoAhorro.obtenerObjetivos();
     objetivos[indiceEdicion] = { descripcion: descripcionObjetivo, cantidadObjetivo };
     guardarEnLocalStorage("objetivos", objetivos);
     indiceEdicion = null;
   } else {
-    // Crear nuevo objetivo
     objetivoAhorro.crearObjetivo(descripcionObjetivo, cantidadObjetivo);
     guardarEnLocalStorage("objetivos", objetivoAhorro.obtenerObjetivos());
   }
 
   mostrarObjetivos();
   document.getElementById("form-objetivo-ahorro").reset();
-  actualizarTextoBoton(); // Restablecer el texto del botón
+  actualizarTextoBoton();
 });
 
 // Completar o editar un objetivo
@@ -423,7 +417,6 @@ document.getElementById("lista-objetivos").addEventListener("click", (event) => 
     const index = event.target.dataset.index;
     objetivos.splice(index, 1);
 
-    // Actualizar localStorage
     guardarEnLocalStorage("objetivos", objetivos);
 
     mostrarObjetivos();
@@ -433,12 +426,11 @@ document.getElementById("lista-objetivos").addEventListener("click", (event) => 
     const index = event.target.dataset.index;
     const objetivo = objetivos[index];
 
-    // Cargar datos en el formulario
     document.getElementById("descripcion-objetivo").value = objetivo.descripcion;
     document.getElementById("cantidad-objetivo").value = objetivo.cantidadObjetivo;
 
-    indiceEdicion = index; // Guardar el índice del objetivo que se está editando
-    actualizarTextoBoton(); // Cambiar texto del botón a "Editar Objetivo"
+    indiceEdicion = index;
+    actualizarTextoBoton();
   }
 });
 
