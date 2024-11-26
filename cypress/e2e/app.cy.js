@@ -223,6 +223,34 @@ describe('Gestión de Objetivos de Ahorro - Crear y Editar', () => {
     cy.get('#lista-objetivos').should('not.contain', 'Viaje');
     cy.get('#lista-objetivos').should('not.contain', '1000');
   });
+
+  it('Debería crear un objetivo de ahorro, marcarlo como confirmado y luego eliminarlo', () => {
+    // Localiza el botón de editar del primer objetivo0
+    cy.get('#lista-objetivos li')
+      .first()
+      .find('.editar-objetivo')
+      .click();
+
+    // Asegura que el formulario está poblado con los datos del objetivo a editar
+    cy.get('#descripcion-objetivo').should('have.value', 'Viaje');
+    cy.get('#cantidad-objetivo').should('have.value', '1000');
+
+    // Cambia los valores en el formulario
+    cy.get('#descripcion-objetivo').clear().type('Recorrido a Europa');
+    cy.get('#cantidad-objetivo').clear().type('2000');
+
+    // Asegura que el botón ahora dice "Editar Objetivo"
+    cy.get('#btn-guardar-objetivo').should('have.text', 'Editar Objetivo');
+
+    // Guarda los cambios
+    cy.get('#form-objetivo-ahorro').submit();
+
+    // Verifica que los cambios se reflejan en la lista
+    cy.get('#lista-objetivos').should('contain', 'Recorrido a Europa');
+    cy.get('#lista-objetivos').should('contain', '2000');
+    cy.get('#lista-objetivos').should('not.contain', 'Viaje');
+    cy.get('#lista-objetivos').should('not.contain', '1000');
+  });
 });
 
 
@@ -272,4 +300,5 @@ describe('Categorias en Gastos', () => {
     cy.get('#btn-agregar').click();
     cy.get('#cuerpo-historial-gastos').should('contain', 'Comidas');
   });
+
 });
