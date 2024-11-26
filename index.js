@@ -1,8 +1,8 @@
 // import { Usuario, ObjetivoAhorro,Transaccion, Categorias } from "./src/clases";
-import { Usuario } from './src/clases/Usuario';
-import { Transaccion } from './src/clases/Transaccion';
-import { ObjetivoAhorro } from './src/clases/ObjetivoAhorro';
-import { Categorias } from './src/clases/Categorias';
+import { Usuario } from './src/clases/Usuario.js';
+import { Transaccion } from './src/clases/Transaccion.js';
+import { ObjetivoAhorro } from './src/clases/ObjetivoAhorro.js';
+import { Categorias } from './src/clases/Categorias.js';
 
 const usuario = Usuario();
 const transaccion = Transaccion();
