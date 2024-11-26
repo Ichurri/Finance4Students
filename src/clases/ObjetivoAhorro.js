@@ -8,9 +8,7 @@ export const ObjetivoAhorro = () => {
 
   const obtenerObjetivos = () => objetivos;
 
-  const cargarObjetivos = (objetivosGuardados) => {
-      objetivos = objetivosGuardados;
-  };
+  const cargarObjetivos = (objetivosGuardados) => objetivos = objetivosGuardados;
 
   return {
     crearObjetivo,
