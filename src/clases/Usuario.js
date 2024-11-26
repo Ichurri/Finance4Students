@@ -1,9 +1,12 @@
 export const Usuario = () => {
-  const nombreUsuario = 'estudiante';
-  const contrasenia = '12345';
+  const NOMBRE_USUARIO = 'estudiante';
+  const CONTRASENIA = '12345';
+
 
   const login = (inputUsuario, inputContrasenia) => {
-    return nombreUsuario === inputUsuario && contrasenia === inputContrasenia;
+    const validUser = inputUsuario === NOMBRE_USUARIO;
+    const validPassword = inputContrasenia === CONTRASENIA;
+    return validUser && validPassword;
   };
 
   return { login };
