@@ -1,6 +1,6 @@
 // import { Usuario, ObjetivoAhorro,Transaccion, Categorias } from "./src/clases";
 import { Usuario } from './src/clases/Usuario';
-import { Transaccioon } from './src/clases/Transaccion';
+import { Transaccion } from './src/clases/Transaccion';
 import { ObjetivoAhorro } from './src/clases/ObjetivoAhorro';
 import { Categorias } from './src/clases/Categorias';
 
