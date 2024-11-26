@@ -2,9 +2,7 @@ export const Categorias = () => {
     let categorias = [];
   
     const crearCategoria = (nuevaCategoria) => {
-      if (nuevaCategoria && !categorias.includes(nuevaCategoria)) {
-        categorias.push(nuevaCategoria);
-      }
+      if (nuevaCategoria && !categorias.includes(nuevaCategoria)) categorias.push(nuevaCategoria);
     };
   
     const obtenerCategorias = () => {
