@@ -2,12 +2,9 @@ export const Transaccion = () => {
   const historialGastos = [];
   const historialIngresos = [];
 
-  // Registrar un gasto
-  const registrarGasto = (cantidad, descripcion, fecha, categoria) => {
+  const registrarGasto = (cantidad, descripcion, fecha, categoria) => 
     historialGastos.push({ cantidad: parseFloat(cantidad), descripcion, categoria, fecha });
-  };
 
-  // Editar un gasto
   const editarGasto = (indice, nuevaCantidad, nuevaDescripcion, nuevaCategoria, nuevaFecha) => {
     if (indice >= 0 && indice < historialGastos.length) {
       historialGastos[indice] = {
@@ -19,22 +16,15 @@ export const Transaccion = () => {
     }
   };
 
-  // Eliminar un gasto
   const eliminarGasto = (indice) => {
-    if (indice >= 0 && indice < historialGastos.length) {
-      historialGastos.splice(indice, 1);
-    }
+    if (indice >= 0 && indice < historialGastos.length) historialGastos.splice(indice, 1);
   };
 
-  // Obtener historial de gastos
   const obtenerHistorialGastos = () => historialGastos;
 
-  // Registrar un ingreso
-  const registrarIngreso = (cantidad, descripcion, fecha) => {
+  const registrarIngreso = (cantidad, descripcion, fecha) => 
     historialIngresos.push({ cantidad: parseFloat(cantidad), descripcion, fecha });
-  };
 
-  // Editar un ingreso
   const editarIngreso = (indice, nuevaCantidad, nuevaDescripcion, nuevaFecha) => {
     if (indice >= 0 && indice < historialIngresos.length) {
       historialIngresos[indice] = {
@@ -45,21 +35,13 @@ export const Transaccion = () => {
     }
   };
 
-  // Eliminar un ingreso
   const eliminarIngreso = (indice) => {
-    if (indice >= 0 && indice < historialIngresos.length) {
-      historialIngresos.splice(indice, 1);
-    }
+    if (indice >= 0 && indice < historialIngresos.length) historialIngresos.splice(indice, 1);
   };
 
-  // Obtener historial de ingresos
   const obtenerHistorialIngresos = () => historialIngresos;
 
-  // Calcular el saldo total
   const calcularSaldoTotal = () => {
-    console.log("Historial de Ingresos:", historialIngresos);
-    console.log("Historial de Gastos:", historialGastos);
-
     const totalIngresos = historialIngresos.reduce((total, ingreso) => {
       return total + (isNaN(parseFloat(ingreso.cantidad)) ? 0 : parseFloat(ingreso.cantidad));
     }, 0);
@@ -67,11 +49,7 @@ export const Transaccion = () => {
     const totalGastos = historialGastos.reduce((total, gasto) => {
       return total + (isNaN(parseFloat(gasto.cantidad)) ? 0 : parseFloat(gasto.cantidad));
     }, 0);
-
-    console.log("Total Ingresos:", totalIngresos);
-    console.log("Total Gastos:", totalGastos);
-    console.log("Saldo Total:", totalIngresos - totalGastos);
-
+    
     return totalIngresos - totalGastos;
   };
 
