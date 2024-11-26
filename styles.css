@@ -1,0 +1,152 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  h1, h2 {
+    color: #4CAF50;
+  }
+  
+  h2 {
+    margin-top: 20px;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 5px;
+  }
+  
+  p {
+    font-size: 16px;
+  }
+  
+  hr {
+    border: 1px solid #ddd;
+    margin: 20px 0;
+  }
+  
+  /* Contenedores principales */
+  #login-container,
+  #app-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  /* Formularios */
+  form {
+    margin: 20px 0;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  
+  input:focus, select:focus, button:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Tablas */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f4f4f4;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Botones de acción */
+  button.editar-btn, button.eliminar-btn {
+    width: auto;
+    padding: 5px 10px;
+    margin: 0 5px;
+    font-size: 12px;
+  }
+  
+  button.editar-btn {
+    background-color: #ffc107;
+  }
+  
+  button.eliminar-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  /* Listas */
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  ul li {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  ul li:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Secciones */
+  section {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  #saldo-total {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50;
+  }
+  
